@@ -348,8 +348,8 @@ tidy_m %>%
 tidy_cc %>%
   slice_max(n,n = 15) %>%
   ggplot(aes(x = n,
-                   y= word,
-                   fill = "lightblue"))+
+             y= reorder(word,n),
+             fill = "lightblue"))+
   geom_col(show.legend = FALSE)
 ```
 
