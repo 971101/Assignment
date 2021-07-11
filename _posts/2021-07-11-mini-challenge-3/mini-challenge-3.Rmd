@@ -224,3 +224,18 @@ combinedata <- rbind.data.frame(meaningful, junk)
 
 meaningless <- dplyr::anti_join(df_m,combinedata,by = c("type", "author", "message"))
 ```
+
+##### 2.3.1.4 Combining meaningful,meaninfless and junk message
+
+Combine meaningful,meaningless and junk data and add a new label column.
+
+```{r}
+junk$condition <- "junk"
+meaningful$condition <- "meaningful"
+meaningless$condition <- "meaningless"
+
+finalq1 <- rbind.data.frame(meaningful,junk, meaningless)
+DT::datatable(finalq1,extensions = 'Buttons',
+              options = list(autoWidth = TRUE, columnDefs = list(list(width = '400px', targets = c(4))), dom='Bfrtip',
+                             buttons=c('copy', 'csv', 'excel', 'print', 'pdf')))
+```
