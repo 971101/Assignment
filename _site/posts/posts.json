@@ -1,19 +1,19 @@
 [
   {
-    "path": "posts/welcome/",
-    "title": "Welcome to Mini-challenge 3",
-    "description": "Welcome to our new blog, Mini-challenge 3. We hope you enjoy \nreading what we have to say!",
+    "path": "posts/2021-07-11-mini-challenge-3/",
+    "title": "Mini-challenge 3",
+    "description": "A short description of the post.",
     "author": [
       {
-        "name": "Nora Jones",
+        "name": "Qian Ziwei",
         "url": "https://example.com/norajones"
       }
     ],
     "date": "2021-07-11",
     "categories": [],
-    "contents": "\r\n\r\n\r\n\r\n",
+    "contents": "\r\n1. Overview\r\n1.1 Background\r\nIn the country island of Kronos, the increasing noxious effects on health and farming have been related to the uncontrolled activity of GAStech, a natural gas operator, supported by corrupt government officials. On January 20th, 2014, a corporate meeting is held to celebrate the new-found fortune because of the initial public offering of the company. However, a series of rare events occur that lead to the disappearance of several employees. The Protectors of Kronos (POK), a social movement organization that has been fighting against water contamination and government corruption, is suspected in the disappearance.\r\nAs analysts, we were assigned with several tasks in order to identify risks and how they could have been mitigated more effectively.\r\n\r\n\r\n\r\n",
     "preview": {},
-    "last_modified": "2021-07-11T15:43:48+08:00",
-    "input_file": {}
+    "last_modified": "2021-07-11T16:24:36+08:00",
+    "input_file": "mini-challenge-3.knit.md"
   }
 ]
