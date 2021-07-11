@@ -283,8 +283,7 @@ data(stop_words)
 tidy_m <- tidy_m %>%
   anti_join(stop_words)
 
-my_stopwords <- tibble(word = c(as.character(1:10),
-                                "zawahiri","yikes","yehu","yeah",
+my_stopwords <- tibble(word = c("zawahiri","yikes","yehu","yeah",
                                 "yay","ya","xx3942","wuz","wow",
                                 "dr"))
 tidy_m <- tidy_m %>%
@@ -420,6 +419,83 @@ m_tf_idf %>%
 ##### 2.3.3.3 Bigrams visualization
 
 ```{r}
+
+meaningful_bigrams <- meaningful %>%
+  unnest_tokens(bigram,message,token = "ngrams", n = 2)
+meaningful_bigrams %>%
+  count(bigram, sort = TRUE)
+meaningful_separated <- meaningful_bigrams %>%
+  separate(bigram, c("word1", "word2"), sep = " ")
+meaningful_filtered <- meaningful_separated %>%
+  filter(!word1 %in% my_stopwords) %>%
+  filter(!word2 %in% my_stopwords)
+meaningful_filtered <- meaningful_filtered %>%
+    filter(!word1 %in% stop_words$word) %>%
+  filter(!word2 %in% stop_words$word)
+meaningful_counts <- meaningful_filtered %>% 
+  count(word1, word2, sort = TRUE)
+meaningful_graph <- meaningful_counts %>%
+  filter(n > 4) %>%
+  graph_from_data_frame()
+
+set.seed(2020)
+a <- grid::arrow(type = "closed",length = unit(.15,"inches"))
+
+ggraph(meaningful_graph,layout = "fr")+
+  geom_edge_link(aes(edge_alpha = n), show.legend = FALSE,
+                 arrow = a, end_cap = circle(.07, 'inches')) +
+  geom_node_point(color = "lightblue", size = 5) +
+  geom_node_text(aes(label = name), vjust = 1, hjust = 1) +
+  theme_void()
+
+junk_bigrams <- junk %>%
+  unnest_tokens(bigram,message,token = "ngrams", n = 2)
+junk_bigrams %>%
+  count(bigram, sort = TRUE)
+junk_separated <- junk_bigrams %>%
+  separate(bigram, c("word1", "word2"), sep = " ")
+junk_filtered <- junk_separated %>%
+  filter(!word1 %in% stop_words$word) %>%
+  filter(!word2 %in% stop_words$word)
+junk_counts <- junk_filtered %>% 
+  count(word1, word2, sort = TRUE)
+junk_graph <- junk_counts %>%
+  filter(n > 50) %>%
+  graph_from_data_frame()
+set.seed(2020)
+a <- grid::arrow(type = "closed",length = unit(.15,"inches"))
+
+ggraph(meaningful_graph,layout = "fr")+
+  geom_edge_link(aes(edge_alpha = n), show.legend = FALSE,
+                 arrow = a, end_cap = circle(.07, 'inches')) +
+  geom_node_point(color = "lightblue", size = 5) +
+  geom_node_text(aes(label = name), vjust = 1, hjust = 1) +
+  theme_void()
+
+meaningless_bigrams <- meaningless %>%
+  unnest_tokens(bigram,message,token = "ngrams", n = 2)
+meaningless_bigrams %>%
+  count(bigram, sort = TRUE)
+meaningless_separated <- meaningless_bigrams %>%
+  separate(bigram, c("word1", "word2"), sep = " ")
+meaningless_filtered <- meaningless_separated %>%
+  filter(!word1 %in% stop_words$word) %>%
+  filter(!word2 %in% stop_words$word)
+meaningless_counts <- meaningless_filtered %>% 
+  count(word1, word2, sort = TRUE)
+meaningless_graph <- meaningless_counts %>%
+  filter(n > 4) %>%
+  graph_from_data_frame()
+set.seed(2020)
+a <- grid::arrow(type = "closed",length = unit(.15,"inches"))
+
+ggraph(meaningful_graph,layout = "fr")+
+  geom_edge_link(aes(edge_alpha = n), show.legend = FALSE,
+                 arrow = a, end_cap = circle(.07, 'inches')) +
+  geom_node_point(color = "lightblue", size = 5) +
+  geom_node_text(aes(label = name), vjust = 1, hjust = 1) +
+  theme_void()
+
 ```
 
 ##### 2.3.3.4 Cor visualization
@@ -429,5 +505,6 @@ m_words_cor <- tidy_m %>%
   group_by(condition) %>%
   filter(n()>=20) %>%
   pairwise_cor(word,condition,sort = TRUE)
+
 
 ```
