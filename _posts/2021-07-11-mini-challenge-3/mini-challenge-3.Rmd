@@ -286,15 +286,34 @@ tidy_m <- tidy_m %>%
   anti_join(my_stopwords)
 ```
 
-##### 2.3.1.7 Simple EDA
+##### 2.3.2 Simple EDA
 
+The graph below is the word number distribution of junk,meaningful and meaningless group. The junk message has high repetition rate of words.
 
 ```{r}
 ggplot(tidy_m,aes(n,fill = condition))+
   geom_histogram(show.legend = FALSE)+
   xlim(0,100)+
   facet_wrap(~condition, ncol = 2,scales = "free_y")
+```
 
+The graph below is the top 15 word(n) of junk,meaningful and meaningless group.
+
+* Junk group
+
+    * Most of them are words related to POK Rally, used to vent feelings or words related to success. There are also statements against the government and police. Words like "success","life","police".
+    
+    * There are also obvious spam features such as rt and grammar. These message number is very large and do not provide useful information.
+    
+* Meaningful group 
+
+    * Words can provide information about the important people of the events. Words like "viktore".
+
+    * Words can provide information on the important processes of the events. Words like "standoff".
+    
+    * Words can provide information on the important locations of the events. words like "dolphin","dancing"
+    
+```{r}
 tidy_m %>%
   group_by(condition) %>%
   slice_max(n, n= 15) %>%
