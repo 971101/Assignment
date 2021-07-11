@@ -84,3 +84,46 @@ for(p in packages){
 }
 ```
 
+### 2.2 Importing data and changing data type
+
+First, use <font color = blue>*read_csv()* </font> to import the csv file. 
+
+```{r}
+read1 <- read_csv("F:/visual/assignment and project/MC3/MC3/csv-1700-1830.csv",
+                  col_types = list(col_character(),col_character(),col_character(),
+                                   col_character(),col_double(),col_double(),
+                                   col_character()))
+read2 <- read_csv("F:/visual/assignment and project/MC3/MC3/csv-1831-2000.csv",
+                  col_types = list(col_character(),col_character(),col_character(),
+                                   col_character(),col_double(),col_double(),
+                                   col_character()))
+read3 <- read_csv("F:/visual/assignment and project/MC3/MC3/csv-2001-2131.csv",
+                  col_types = list(col_character(),col_character(),col_character(),
+                                   col_character(),col_double(),col_double(),
+                                   col_character()))
+```
+Using function <font color = blue>*rbind()* </font> combine these three csv files with the same format.
+
+```{r}
+df <- rbind.data.frame(read1,read2,read3)
+glimpse(df)
+DT::datatable(df,filter = 'top',
+              extensions = 'Buttons',
+              options = list(autoWidth = TRUE, columnDefs = list(list(width = '400px', targets = c(4))), dom='Bfrtip',
+                             buttons=c('copy', 'csv', 'excel', 'print', 'pdf'))) 
+```
+
+From the above table the <font color = red>*date(yyyyMMddHHmmss)*</font> is not in time format, so converting to date-time field. Because in the mini-challenge 3, all activities occur on the same day.Extract time(hms) data without date and transform.
+
+```{r}
+df$`date(yyyyMMddHHmmss)` <- date_time_parse(df$`date(yyyyMMddHHmmss)`,
+                                 zone = "",
+                                 format = "%Y%m%d %H%M%S")
+df$time <- as_hms(ymd_hms((df$`date(yyyyMMddHHmmss)`)))
+glimpse(df)
+DT::datatable(df,filter = 'top',
+              extensions = 'Buttons',
+              options = list(autoWidth = TRUE, columnDefs = list(list(width = '400px', targets = c(4))), dom='Bfrtip',
+                             buttons=c('copy', 'csv', 'excel', 'print', 'pdf')))
+```
+
