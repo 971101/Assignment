@@ -141,3 +141,22 @@ DT::datatable(df_cc,extensions = 'Buttons',
               options = list(autoWidth = TRUE, columnDefs = list(list(width = '400px', targets = c(4))), dom='Bfrtip',
                              buttons=c('copy', 'csv', 'excel', 'print', 'pdf')))
 ```
+
+##### 2.3.1.1 Junk message
+
+<font color = red>*JUNk definition*</font>: After reading all the data carefully, I have selected the following types of data.
+
+* Authors like "KronosQuoth" will post content related to the three types of activities(rally, fire to collapsed, accident to gunshot) in this challenge, but cannot or rarely provide important information such as location. The content is mostly emotional and cathartic.
+
+* Content that includes the term "#Grammar" is mostly unrelated to important events in mini-challenge 3.
+
+* Content containing "RT" is a forwarding of other people's messages, providing the same information repeatedly. And, the number of "RT" message is very large.
+
+```{r}
+junk <- df_m %>%
+  filter(str_detect(author,"KronosQuoth|Clevvah4Eva|footfingers|truccotrucco|
+                  choconibbs|trollingsnark|blueSunshine|truthforcadau|whiteprotein|
+                  FriendsOfKronos|junkman377|junkman995|redisrad|roger_roger|
+                  cheapgoods998|rockinHW|panopticon|dels4realz|eazymoney|cleaningFish")|
+           str_detect(message,"#Grammar|RT"))
+```
