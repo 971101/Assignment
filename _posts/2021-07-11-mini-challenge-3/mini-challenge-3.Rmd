@@ -407,7 +407,7 @@ m_tf_idf <- tidy_m %>%
 m_tf_idf %>%
   arrange(desc(tf_idf))
 
-DT::datatable(tidy_cc,filter = 'top',
+DT::datatable(m_tf_idf,filter = 'top',
               extensions = 'Buttons',
               options = list(autoWidth = FALSE, columnDefs = list(list(width = '60px', targets = c(0:2))),
                              dom='Bfrtip',
@@ -418,5 +418,7 @@ m_tf_idf %>%
   ungroup() %>%
   ggplot(aes(tf_idf, fct_reorder(word, tf_idf), fill = condition))+
   geom_col(show.legend = FALSE)+
-  facet_wrap(~condition,ncol = 2,scales = "free")
+  facet_wrap(~condition,ncol = 2,scales = "free")+
+  labs(y = NULL)
 ```
+
