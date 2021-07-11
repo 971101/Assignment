@@ -334,6 +334,9 @@ The graph below is the top 15 word(n) of junk,meaningful and meaningless group.
     
     * Words can provide information on the important locations of the events. words like "dolphin","dancing".
     
+* Meaningless group    
+    
+    
 ```{r}
 tidy_m %>%
   group_by(condition) %>%
@@ -352,8 +355,7 @@ The graph of <font color = red>*ccdata*</font> shows that the events like "fire"
 tidy_cc %>%
   slice_max(n,n = 15) %>%
   ggplot(aes(x = n,
-             y= reorder(word,n),
-             fill = "lightblue"))+
+             y= reorder(word,n)))+
   geom_col(show.legend = FALSE)+
   labs(y = NULL)
 ```
@@ -362,6 +364,8 @@ tidy_cc %>%
 #### 2.3.3 Visualization the ccdata and mbdata
 
 ##### 2.3.3.1 Wordcloud
+
+The conclusion is similar to Simple EDA.
 
 ```{r}
 wordcloud_m <- tidy_m
@@ -392,4 +396,27 @@ wordcloud_m <- finalq1 %>%
 
 tidy_cc %>%
   with(wordcloud(word,n,max.words = 100))
+```
+
+##### 2.3.3.2 tf-idf visualization
+
+```{r}
+m_tf_idf <- tidy_m %>%
+  bind_tf_idf(word,condition,n)
+
+m_tf_idf %>%
+  arrange(desc(tf_idf))
+
+DT::datatable(tidy_cc,filter = 'top',
+              extensions = 'Buttons',
+              options = list(autoWidth = FALSE, columnDefs = list(list(width = '60px', targets = c(0:2))),
+                             dom='Bfrtip',
+                             buttons=c('copy', 'csv', 'excel', 'print', 'pdf')))
+m_tf_idf %>%
+  group_by(condition) %>%
+  slice_max(tf_idf, n = 15) %>%
+  ungroup() %>%
+  ggplot(aes(tf_idf, fct_reorder(word, tf_idf), fill = condition))+
+  geom_col(show.legend = FALSE)+
+  facet_wrap(~condition,ncol = 2,scales = "free")
 ```
