@@ -137,7 +137,8 @@ df1 <- subset(df, select = c("type","author","message"))
 df_m <- subset(df1, type == "mbdata")
 df_cc <- subset(df1,type == "ccdata")
 df_cc$condition <- "meaningful"
-DT::datatable(df_cc,extensions = 'Buttons',
+DT::datatable(df_cc,filter = 'top',
+              extensions = 'Buttons',
               options = list(autoWidth = TRUE, columnDefs = list(list(width = '400px', targets = c(4))), dom='Bfrtip',
                              buttons=c('copy', 'csv', 'excel', 'print', 'pdf')))
 ```
@@ -235,7 +236,8 @@ meaningful$condition <- "meaningful"
 meaningless$condition <- "meaningless"
 
 finalq1 <- rbind.data.frame(meaningful,junk, meaningless)
-DT::datatable(finalq1,extensions = 'Buttons',
+DT::datatable(finalq1,filter = 'top',
+              extensions = 'Buttons',
               options = list(autoWidth = TRUE, columnDefs = list(list(width = '400px', targets = c(4))), dom='Bfrtip',
                              buttons=c('copy', 'csv', 'excel', 'print', 'pdf')))
 ```
