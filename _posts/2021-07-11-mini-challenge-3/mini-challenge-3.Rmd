@@ -56,4 +56,31 @@ Determine the appropriate location for first responders.
 
 ---
 
+# 2. Building the visualization
+
+---
+
+### 2.1 Setting up the environment/packages
+
+First, we run this fist line of code to clear the environment and remove existing R objects(if any).
+
+```{r}
+rm(list = ls())
+```
+
+This code chunk checks if required packages are installed. If they are not installed, the next line of code will install them. The following line is then use to import the library into the current working environment.
+
+```{r}
+packages = c('readr','tidytext','data.table','lubridate','ggplot2',
+             'caret','dplyr','tidyr','scales','quanteda','textdata',
+             'stringr','stringi','reshape2','RColorBrewer','wordcloud',
+             'forcats','igraph','ggraph','widyr','clock','knitr','tidyverse',
+             'DT','hms')
+for(p in packages){
+  if(!require(p,character.only = TRUE)){
+    install.packages(p)
+  }
+  library(p,character.only = TRUE)
+}
+```
 
