@@ -307,7 +307,7 @@ DT::datatable(tidy_cc,filter = 'top',
                              buttons=c('copy', 'csv', 'excel', 'print', 'pdf')))
 ```
 
-##### 2.3.2 Simple EDA
+#### 2.3.2 Simple EDA
 
 The graph below is the word number distribution of junk,meaningful and meaningless group. The junk message has high repetition rate of words.
 
@@ -344,12 +344,46 @@ tidy_m %>%
              fill = condition))+
   geom_col(show.legend = FALSE)+
   facet_wrap(~ condition, ncol = 2,scales = "free")
+```
 
+The graph of <font color = red>*ccdata*</font> shows that the events like "fire","traffic".
+
+```{r}
 tidy_cc %>%
   slice_max(n,n = 15) %>%
   ggplot(aes(x = n,
              y= reorder(word,n),
              fill = "lightblue"))+
-  geom_col(show.legend = FALSE)
+  geom_col(show.legend = FALSE)+
+  labs(y = NULL)
 ```
 
+
+#### 2.3.3 Visualization the ccdata and mbdata
+
+##### 2.3.3.1 Wordcloud
+
+```{r}
+wordcloud_m <- tidy_m
+
+wordcloud_m <- finalq1 %>%
+  filter(condition == "meaningful") %>%
+  unnest_tokens(word, message)%>%
+  count(word,sort = TRUE)%>%
+  with(wordcloud(word,n,max.words = 100))
+
+wordcloud_m <- finalq1 %>%
+  filter(condition == "meaningless") %>%
+  unnest_tokens(word, message)%>%
+  count(word,sort = TRUE)%>%
+  with(wordcloud(word,n,max.words = 100))
+
+wordcloud_m <- finalq1 %>%
+  filter(condition == "junk") %>%
+  unnest_tokens(word, message)%>%
+  count(word,sort = TRUE)%>%
+  with(wordcloud(word,n,max.words = 100))
+
+tidy_cc %>%
+  with(wordcloud(word,n,max.words = 100))
+```
