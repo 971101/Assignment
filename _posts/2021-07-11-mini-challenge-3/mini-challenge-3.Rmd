@@ -267,7 +267,7 @@ DT::datatable(finalq1,filter = 'top',
 ```
 
 
-##### 2.3.1.6 Token the data and custom stop-words according to the word frequency.
+##### 2.3.1.6 Token the data and custom stop-words.
 
 ```{r}
 tidy_m <- finalq1 %>%
@@ -278,10 +278,16 @@ data(stop_words)
 tidy_m <- tidy_m %>%
   anti_join(stop_words)
 
-total_words_m <- tidy_m %>%
-  group_by(condition) %>%
-  summarize(total = sum(n))
+my_stopwords <- tibble(word = c(as.character(1:10),
+                                "zawahiri","yikes","yehu","yeah",
+                                "yay","ya","xx3942","wuz","wow",
+                                "dr"))
+```
 
+##### 2.3.1.7 Simple EDA
+
+
+```{r}
 tidy_m %>%
   group_by(condition) %>%
   slice_max(n, n= 15) %>%
@@ -291,10 +297,5 @@ tidy_m %>%
              fill = condition))+
   geom_col(show.legend = FALSE)+
   facet_wrap(~ condition, ncol = 2,scales = "free")
-
-my_stopwords <- tibble(word = c(as.character(1:10),
-                                "zawahiri","yikes","yehu","yeah",
-                                "yay","ya","xx3942","wuz","wow",
-                                ""))
 ```
 
