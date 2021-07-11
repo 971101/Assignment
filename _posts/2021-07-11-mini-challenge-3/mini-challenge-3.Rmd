@@ -241,3 +241,14 @@ DT::datatable(finalq1,filter = 'top',
               options = list(autoWidth = TRUE, columnDefs = list(list(width = '400px', targets = c(4))), dom='Bfrtip',
                              buttons=c('copy', 'csv', 'excel', 'print', 'pdf')))
 ```
+
+##### 2.3.1.5 Cleaning the dataset before token
+
+```{r}
+finalq1$message <- str_replace_all(finalq1$message,'[[:punct:]]+', "")
+
+finalq1$message <- str_replace_all(finalq1$message,fixed("@"),"")
+
+finalq1$message <- str_replace_all(finalq1$message,fixed("#"),"")
+
+```
