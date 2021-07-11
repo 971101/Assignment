@@ -407,11 +407,6 @@ m_tf_idf <- tidy_m %>%
 m_tf_idf %>%
   arrange(desc(tf_idf))
 
-DT::datatable(m_tf_idf,filter = 'top',
-              extensions = 'Buttons',
-              options = list(autoWidth = FALSE, columnDefs = list(list(width = '60px', targets = c(0:2))),
-                             dom='Bfrtip',
-                             buttons=c('copy', 'csv', 'excel', 'print', 'pdf')))
 m_tf_idf %>%
   group_by(condition) %>%
   slice_max(tf_idf, n = 15) %>%
@@ -419,6 +414,20 @@ m_tf_idf %>%
   ggplot(aes(tf_idf, fct_reorder(word, tf_idf), fill = condition))+
   geom_col(show.legend = FALSE)+
   facet_wrap(~condition,ncol = 2,scales = "free")+
-  labs(y = NULL)
+  labs(x = "word",y = NULL)
 ```
 
+##### 2.3.3.3 Bigrams visualization
+
+```{r}
+```
+
+##### 2.3.3.4 Cor visualization
+
+```{r}
+m_words_cor <- tidy_m %>%
+  group_by(condition) %>%
+  filter(n()>=20) %>%
+  pairwise_cor(word,condition,sort = TRUE)
+
+```
