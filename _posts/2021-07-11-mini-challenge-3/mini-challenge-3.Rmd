@@ -296,13 +296,13 @@ tidy_cc <- df_cc %>%
 
 DT::datatable(tidy_m,filter = 'top',
               extensions = 'Buttons',
-              options = list(autoWidth = TRUE, columnDefs = list(list(width = '150px', targets = c(1:3))),
+              options = list(autoWidth = FALSE, columnDefs = list(list(width = '60px', targets = c(0:3))),
                              dom='Bfrtip',
                              buttons=c('copy', 'csv', 'excel', 'print', 'pdf')))
 
 DT::datatable(tidy_cc,filter = 'top',
               extensions = 'Buttons',
-              options = list(autoWidth = TRUE, columnDefs = list(list(width = '150px', targets = c(1:3))),
+              options = list(autoWidth = FALSE, columnDefs = list(list(width = '60px', targets = c(0:2))),
                              dom='Bfrtip',
                              buttons=c('copy', 'csv', 'excel', 'print', 'pdf')))
 ```
@@ -344,5 +344,12 @@ tidy_m %>%
              fill = condition))+
   geom_col(show.legend = FALSE)+
   facet_wrap(~ condition, ncol = 2,scales = "free")
+
+tidy_cc %>%
+  slice_max(n,n = 15) %>%
+  ggplot(aes(x = n,
+                   y= word,
+                   fill = "lightblue"))+
+  geom_col(show.legend = FALSE)
 ```
 
