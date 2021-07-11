@@ -127,3 +127,17 @@ DT::datatable(df,filter = 'top',
                              buttons=c('copy', 'csv', 'excel', 'print', 'pdf')))
 ```
 
+### 2.3 Question 1
+
+#### 2.3.1 Data processing
+In question 1, extract the required data from the <font color = red>*df*</font> to make a new data frame. After reading all the data carefully, the terminology of <font color = red>*mbdata*</font> and <font color = red>*ccdata*</font> is very different, so separate the two files. Since ccdata is a police or fire department record, this dataset is labeled as a meaningful dataset.
+
+```{r}
+df1 <- subset(df, select = c("type","author","message"))
+df_m <- subset(df1, type == "mbdata")
+df_cc <- subset(df1,type == "ccdata")
+df_cc$condition <- "meaningful"
+DT::datatable(df_cc,extensions = 'Buttons',
+              options = list(autoWidth = TRUE, columnDefs = list(list(width = '400px', targets = c(4))), dom='Bfrtip',
+                             buttons=c('copy', 'csv', 'excel', 'print', 'pdf')))
+```
