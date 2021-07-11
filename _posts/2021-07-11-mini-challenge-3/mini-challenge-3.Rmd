@@ -160,3 +160,49 @@ junk <- df_m %>%
                   cheapgoods998|rockinHW|panopticon|dels4realz|eazymoney|cleaningFish")|
            str_detect(message,"#Grammar|RT"))
 ```
+
+
+##### 2.3.1.2 Meaningful message
+
+<font color = red>*Meaningful definition*</font>: After reading all the data carefully, I have selected the following types of data.
+
+* Information released by authors who are more official or authoritative. Author like "POK","AbilaPoliceDepartment".
+
+* Information released by authors are witnesses to events and publishes information that provides important information. Authors like "magaMan","Sara_Nespola".
+
+* Content that includes terms like "fire","rally" is mostly related to the important events in mini-challenge 3.
+
+```{r}
+meaningful <- df_m %>%
+  filter(str_detect(author,"POK|AbilaPost|CentralBulletin|ourcountryyourrights|
+  MindOfKronos|Viktor-E|maha_Homeland,anaregents|wordWatcher|InternationalNews|
+  HomelandIlluminations|NewsOnlineToday|AbilaPoliceDepartment|KronosStar|magaMan|
+  Sara_Nespola|protoGuy|SiaradSea|AbilaFireDept")|
+           str_detect(message,"POK Rally|@POK|Abila City Park|POK rally|Sylvia Marek|
+                      #POKrally|#POK|#POKRally|#porkrally|terrorists|#KronosStar|
+                      #Ailbapost|#IntNews|@AlibaPost|#CentralBulletin|Marek|violence|
+                      @ourcountryyourrights|#POKlove|Sylvia|Di Stefan|@MindOfKronos|
+                      @Viktor-E|@InternationalNews|Lucio|Death|Audrey McConnel Newman|
+                      @Officia1AbilaPost|#POKRallyinthepark|#POKpeace|#terror|cops|cop|
+                      Jakab|@anaregents|@maha_homeland|Anarchist|#POKRallyinthepark|kidnapping|
+                      crime|#terrorists|#APD|APD|Parla St|Egeou St|Alm St|Sanjorge|
+                      crackdown|River Soldies|leaving|Human Trafficking rally|kidnap|
+                      missing|#SavePeople|Joni Mitchell|Newman|murder|Elian|fire|
+                      Achilleos|AFD|burn(delet writinLazy)|Fire Departmentsmoke|
+                      bonfire, Dancing Dolphin apartment, @HomelandIlluminations|
+                      fire trucks|#HELPME|ambulance|#dancingdolfinfire|occupants|
+                      #DancingDolphinsFire|@dancingdolphin|#dancingdolphinfire|floor|
+                      floors|fireman|firefighters|firefighter|PD|Paramedics|
+                      smoke inhalation|injuries|scene|precaution fire officials|
+                      evacuated|evacuate|evacuations|evacuation|evacuating|rescued|
+                      out of control|AFD|under control|trapped|collapsed|blaze|
+                      escalated|traffic|car hit|Souliou|black van|driver|bicyclist|
+                      Schaber|#jerkdrivers|hit|injured|L829|run incident|hit and run|
+                      bike|wheels|accident|biker|in pursuit|Henri|gelatogalore|
+                      gelato|explosion??|gun|shots|gunshot|shot|Gunfire|gun fire|
+                      shooting|shooter|chouting|killed|dead|gunman|hostages|
+                      in danger|hurt|hostage|Ithakis and Alexandrias|kill|SWAT|
+                      swat|standoff|negotiating|negotiator|negoitations|Carly|
+                      yelling|screaming|chasing|dude|stand-off|standoff|stand off|
+                      ends|caught|over|end|ended|rescued"))
+```
