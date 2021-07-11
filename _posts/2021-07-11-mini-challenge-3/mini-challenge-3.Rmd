@@ -31,4 +31,29 @@ In the country island of Kronos, the increasing noxious effects on health and fa
 
 As analysts, we were assigned with several tasks in order to identify risks and how they could have been mitigated more effectively.
 
+### 1.2 Literature review
+
+
+### 1.3 Objective
+
+Using data and visual analytics to evaluate the changing levels of risk to the public and recommend actions for first responder:
+
+* Distinguish meaningful event reports from typical chatter from junk or spam.
+
+* Evaluate the level of the risk to the public evolves over the course of the evening. Consider the potential consequences of the situation and the number of people who could be affected.
+Determine the appropriate location for first responders.
+
+* The differences between dealing with this challenge in 2014 and dealing with it now.
+
+### 1.4 Question 1
+
+### 1.5 Question 2
+
+### 1.6 Question 3
+
+### 1.7 Question 4
+
+
+---
+
 
