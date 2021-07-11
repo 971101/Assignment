@@ -369,12 +369,16 @@ wordcloud_m <- tidy_m
 wordcloud_m <- finalq1 %>%
   filter(condition == "meaningful") %>%
   unnest_tokens(word, message)%>%
+  anti_join(stop_words) %>%
+  anti_join(my_stopwords) %>%
   count(word,sort = TRUE)%>%
   with(wordcloud(word,n,max.words = 100))
 
 wordcloud_m <- finalq1 %>%
   filter(condition == "meaningless") %>%
   unnest_tokens(word, message)%>%
+  anti_join(stop_words) %>%
+  anti_join(my_stopwords) %>%
   count(word,sort = TRUE)%>%
   with(wordcloud(word,n,max.words = 100))
 
@@ -382,6 +386,8 @@ wordcloud_m <- finalq1 %>%
   filter(condition == "junk") %>%
   unnest_tokens(word, message)%>%
   count(word,sort = TRUE)%>%
+  anti_join(stop_words) %>%
+  anti_join(my_stopwords) %>%
   with(wordcloud(word,n,max.words = 100))
 
 tidy_cc %>%
