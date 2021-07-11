@@ -284,6 +284,10 @@ my_stopwords <- tibble(word = c(as.character(1:10),
                                 "dr"))
 tidy_m <- tidy_m %>%
   anti_join(my_stopwords)
+
+tidy_cc <- df_cc %>%
+  unnest_tokens(word,message) %>%
+  count(word, sort = TRUE)
 ```
 
 ##### 2.3.2 Simple EDA
@@ -311,7 +315,7 @@ The graph below is the top 15 word(n) of junk,meaningful and meaningless group.
 
     * Words can provide information on the important processes of the events. Words like "standoff".
     
-    * Words can provide information on the important locations of the events. words like "dolphin","dancing"
+    * Words can provide information on the important locations of the events. words like "dolphin","dancing".
     
 ```{r}
 tidy_m %>%
