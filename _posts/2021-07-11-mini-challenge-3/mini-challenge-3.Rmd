@@ -206,3 +206,21 @@ meaningful <- df_m %>%
                       yelling|screaming|chasing|dude|stand-off|standoff|stand off|
                       ends|caught|over|end|ended|rescued"))
 ```
+
+##### 2.3.1.3 Meaningless message
+
+<font color = red>*Meaningless definition*</font>: After reading all the data carefully, I have selected the following types of data.
+
+* Content that includes terms like "fire","rally" which is related to the events but is used to express emotions and can not provide important information.
+
+* Content that is unrelated to the events, but has their own objectives like sharing the information of shops.
+
+This group is obtained by subtracting other groups from the <font color = red>*df_m*</font> through <font color = blue>*anti_join()*</font> function.
+
+```{r}
+meaningful <- dplyr::anti_join(meaningful,junk,by = c("type", "author", "message"))
+
+combinedata <- rbind.data.frame(meaningful, junk)
+
+meaningless <- dplyr::anti_join(df_m,combinedata,by = c("type", "author", "message"))
+```
