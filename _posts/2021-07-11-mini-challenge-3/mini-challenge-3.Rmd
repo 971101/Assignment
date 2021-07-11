@@ -256,10 +256,45 @@ finalq1$message <- str_replace_all(finalq1$message,fixed("#"),"")
 finalq1$message <- str_replace_all(finalq1$message,fixed("<"),"")
 
 finalq1$message <- str_replace_all(finalq1$message,"[\u4e00-\u9fa5]+", "")
+```
 
+The messages in the table below is clean.
+```{r}
 DT::datatable(finalq1,filter = 'top',
               extensions = 'Buttons',
               options = list(autoWidth = TRUE, columnDefs = list(list(width = '400px', targets = c(4))), dom='Bfrtip',
                              buttons=c('copy', 'csv', 'excel', 'print', 'pdf')))
+```
+
+
+##### 2.3.1.6 Token the data and custom stop-words according to the word frequency.
+
+```{r}
+tidy_m <- finalq1 %>%
+  unnest_tokens(word, message)%>%
+  count(condition,word,sort = TRUE)
+
+data(stop_words)
+tidy_m <- tidy_m %>%
+  anti_join(stop_words)
+
+total_words_m <- tidy_m %>%
+  group_by(condition) %>%
+  summarize(total = sum(n))
+
+tidy_m %>%
+  group_by(condition) %>%
+  slice_max(n, n= 15) %>%
+  ungroup() %>%
+  ggplot(aes(x = n,
+             y= word,
+             fill = condition))+
+  geom_col(show.legend = FALSE)+
+  facet_wrap(~ condition, ncol = 2,scales = "free")
+
+my_stopwords <- tibble(word = c(as.character(1:10),
+                                "zawahiri","yikes","yehu","yeah",
+                                "yay","ya","xx3942","wuz","wow",
+                                ""))
 ```
 
