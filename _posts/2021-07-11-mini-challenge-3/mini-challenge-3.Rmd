@@ -282,12 +282,19 @@ my_stopwords <- tibble(word = c(as.character(1:10),
                                 "zawahiri","yikes","yehu","yeah",
                                 "yay","ya","xx3942","wuz","wow",
                                 "dr"))
+tidy_m <- tidy_m %>%
+  anti_join(my_stopwords)
 ```
 
 ##### 2.3.1.7 Simple EDA
 
 
 ```{r}
+ggplot(tidy_m,aes(n,fill = condition))+
+  geom_histogram(show.legend = FALSE)+
+  xlim(0,100)+
+  facet_wrap(~condition, ncol = 2,scales = "free_y")
+
 tidy_m %>%
   group_by(condition) %>%
   slice_max(n, n= 15) %>%
