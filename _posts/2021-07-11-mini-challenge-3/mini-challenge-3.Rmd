@@ -75,7 +75,7 @@ packages = c('readr','tidytext','data.table','lubridate','ggplot2',
              'caret','dplyr','tidyr','scales','quanteda','textdata',
              'stringr','stringi','reshape2','RColorBrewer','wordcloud',
              'forcats','igraph','ggraph','widyr','clock','knitr','tidyverse',
-             'DT','hms','ggiraph')
+             'DT','hms','ggiraph','topicmodels')
 for(p in packages){
   if(!require(p,character.only = TRUE)){
     install.packages(p)
@@ -510,11 +510,6 @@ m_words_cor <- tidy_m %>%
 
 ```
 
-### 2.4 Question 1
-
-#### 2.4.1 Data processing
-
-##### 2.4.1.1 Getting the meaningful data.
 
 Repeating the process above and get a whole meaningful dataset.
 
@@ -868,4 +863,41 @@ q2_accident_tidy%>%
   geom_histogram()+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
   labs(y =NULL)
+```
+
+### 2.5 Question 3
+
+#### 2.5.1 Data processing
+
+```{r}
+q3 <- rbind(q2_meaningful,q2_cc)
+tidy_q3 <- q3 %>%
+  unnest_tokens(word,message)
+
+q3_wordcount <- tidy_q3 %>%
+  anti_join(stop_words)
+
+my_stopwords <- tibble(word = c("zawahiri","yikes","yehu","yeah",
+                                "yay","ya","xx3942","wuz","wow",
+                                "dr"))
+q3_wordcount <- q3_wordcount %>%
+  anti_join(my_stopwords) %>%
+  count(author,word,sort = TRUE)
+
+q3_dtm <- q3_wordcount %>%
+  cast_dfm(author,word,n)
+
+q3_author_lda <- LDA(q3_dtm,k = 4, control = list(seed = 1234))
+
+q3_topics <- tidy(q3_author_lda,matrix = "beta")
+
+q3_topics
+q3_topics %>%
+  group_by(topic) %>%
+  top_n(5,beta) %>%
+  ungroup() %>%
+  arrange(topic,-beta) %>%
+  ggplot(aes(beta,term,fill = topic))+
+  geom_col(show.legend = FALSE)+
+  facet_wrap(~topic,ncol = 2,scales = "free")
 ```
