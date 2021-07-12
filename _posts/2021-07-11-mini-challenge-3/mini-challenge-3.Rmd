@@ -672,6 +672,57 @@ DT::datatable(q2_fire_tidy,filter = 'top',
                              buttons=c('copy', 'csv', 'excel', 'print', 'pdf')))
 ```
 
+##### From hit-and-run accident to shooting and standoff
+
+```{r}
+q2_accident_m <- q2_meaningful %>%
+  filter(str_detect(message,"shooting|stanoff|hostage|swat|hegotiation|fight|arrest|hit|van| drive|bicyclist|accident|incident|bike|L829|pursuit|gun|shot|kill|dead|yelling|screaming|negotiatingnegotiator|caught|over|end"))
+
+q2_accident_cc <- q2_cc %>%
+  filter(str_detect(message,"van|pursuit|accident|vandalism|swat"))
+
+q2_accident <- rbind(q2_accident_m,q2_accident_cc)
+
+DT::datatable(q2_accident,filter = 'top',
+              extensions = 'Buttons',
+              options = list(autoWidth = TRUE, columnDefs = list(list(width = '400px', targets = c(4))),
+                             dom='Bfrtip',
+                             buttons=c('copy', 'csv', 'excel', 'print', 'pdf')))
+```
+
+```{r}
+q2_accident$message <- str_replace_all(q2_accident$message,'[[:punct:]]+', "")
+
+q2_accident$message <- str_replace_all(q2_accident$message,fixed("@"),"")
+
+q2_accident$message <- str_replace_all(q2_accident$message,fixed("#"),"")
+
+q2_accident$message <- str_replace_all(q2_accident$message,fixed("<"),"")
+
+q2_accident$message <- str_replace_all(q2_accident$message,"[\u4e00-\u9fa5]+", "")
+```
+
+```{r}
+q2_accident_tidy <- q2_accident %>%
+  unnest_tokens(word, message)
+
+data(stop_words)
+q2_accident_tidy <- q2_accident_tidy %>%
+  anti_join(stop_words)
+
+my_stopwords <- tibble(word = c("zawahiri","yikes","yehu","yeah",
+                                "yay","ya","xx3942","wuz","wow",
+                                "dr"))
+q2_accident_tidy <- q2_accident_tidy %>%
+  anti_join(my_stopwords)
+
+DT::datatable(q2_accident_tidy,filter = 'top',
+              extensions = 'Buttons',
+              options = list(autoWidth = FALSE, columnDefs = list(list(width = '60px', targets = c(0:3))),
+                             dom='Bfrtip',
+                             buttons=c('copy', 'csv', 'excel', 'print', 'pdf')))
+```
+
 #### 2.4.2 Visualization different events
 
 ##### 2.4.2.1 POK event
