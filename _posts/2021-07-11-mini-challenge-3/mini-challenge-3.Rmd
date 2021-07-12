@@ -625,15 +625,61 @@ DT::datatable(q2_rally_tidy,filter = 'top',
 ```
 
 ```{r}
-p <- q2_rally_tidy%>%
+a <- q2_rally_tidy%>%
+  filter(str_detect(word,"rally"))
+q2_rally_tidy%>%
   filter(str_detect(word,"rally")) %>%
   ggplot(aes(x = time)) +
-  geom_dotplot_interactive(stackgroups = TRUE,
-                           binwidth = 1,
-                           method = "histodot")+
-  scale_y_continuous(NULL,
-                     breaks = NULL)
-girafe(ggobj = p,
-       width_svg = 6,
-       height_svg = 6*0.618)
+  geom_histogram()+
+  theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
+    labs(y ="rally")
+ 
+b <- q2_rally_tidy %>%
+  filter(str_detect(word,"pok"))
+q2_rally_tidy%>%
+  filter(str_detect(word,"pok")) %>%
+  ggplot(aes(x = time)) +
+  geom_histogram()+
+  theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
+    labs(y ="pok")
+
+c <- q2_rally_tidy %>%
+  filter(str_detect(word,"sylvia|marek"))
+q2_rally_tidy%>%
+  filter(str_detect(word,"sylvia|marek")) %>%
+  ggplot(aes(x = time)) +
+  geom_histogram()+
+  theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
+    labs(y ="sylvia|marek")
+
+c <- q2_rally_tidy %>%
+  filter(str_detect(word,"sylvia|marek"))
+q2_rally_tidy%>%
+  filter(str_detect(word,"sylvia|marek")) %>%
+  ggplot(aes(x = time)) +
+  geom_histogram()+
+  theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
+    labs(y ="sylvia|marek")
+
+c <- q2_rally_tidy %>%
+  filter(str_detect(word,"audrey|mcConnell
+                    |newman"))
+q2_rally_tidy%>%
+  filter(str_detect(word,"audrey|mcConnell|
+                    newman")) %>%
+  ggplot(aes(x = time)) +
+  geom_histogram()+
+  theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
+  labs(y ="audrey|mcConnell|newman")
+
+q2_rally_tidy%>%
+  filter(str_detect(word,"audrey|mcConnell|
+                    newman")) %>%
+  ggplot(aes(x = time)) +
+  geom_histogram()+
+  theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
+  labs(y ="audrey|mcConnell|newman")
+
+
+
 ```
