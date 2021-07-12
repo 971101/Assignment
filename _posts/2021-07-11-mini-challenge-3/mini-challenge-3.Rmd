@@ -625,8 +625,6 @@ DT::datatable(q2_rally_tidy,filter = 'top',
 ```
 
 ```{r}
-a <- q2_rally_tidy%>%
-  filter(str_detect(word,"rally"))
 q2_rally_tidy%>%
   filter(str_detect(word,"rally")) %>%
   ggplot(aes(x = time)) +
@@ -634,8 +632,6 @@ q2_rally_tidy%>%
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
     labs(y ="rally")
  
-b <- q2_rally_tidy %>%
-  filter(str_detect(word,"pok"))
 q2_rally_tidy%>%
   filter(str_detect(word,"pok")) %>%
   ggplot(aes(x = time)) +
@@ -643,8 +639,6 @@ q2_rally_tidy%>%
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
     labs(y ="pok")
 
-c <- q2_rally_tidy %>%
-  filter(str_detect(word,"sylvia|marek"))
 q2_rally_tidy%>%
   filter(str_detect(word,"sylvia|marek")) %>%
   ggplot(aes(x = time)) +
@@ -652,34 +646,31 @@ q2_rally_tidy%>%
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
     labs(y ="sylvia|marek")
 
-c <- q2_rally_tidy %>%
-  filter(str_detect(word,"sylvia|marek"))
 q2_rally_tidy%>%
-  filter(str_detect(word,"sylvia|marek")) %>%
-  ggplot(aes(x = time)) +
-  geom_histogram()+
-  theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
-    labs(y ="sylvia|marek")
-
-c <- q2_rally_tidy %>%
-  filter(str_detect(word,"audrey|mcConnell
-                    |newman"))
-q2_rally_tidy%>%
-  filter(str_detect(word,"audrey|mcConnell|
-                    newman")) %>%
+  filter(str_detect(word,"audrey|mcConnell|newman")) %>%
   ggplot(aes(x = time)) +
   geom_histogram()+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
   labs(y ="audrey|mcConnell|newman")
 
 q2_rally_tidy%>%
-  filter(str_detect(word,"audrey|mcConnell|
-                    newman")) %>%
+  filter(str_detect(word,"lucio|jakab")) %>%
   ggplot(aes(x = time)) +
   geom_histogram()+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
   labs(y ="audrey|mcConnell|newman")
 
+q2_rally_tidy%>%
+  filter(str_detect(word,"lorenzo|di|stefano")) %>%
+  ggplot(aes(x = time)) +
+  geom_histogram()+
+  theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
+  labs(y ="lorenzo|di|stefano")
 
-
+q2_rally_tidy%>%
+  filter(str_detect(word,"viktor")) %>%
+  ggplot(aes(x = time)) +
+  geom_histogram()+
+  theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
+  labs(y ="viktor")
 ```
