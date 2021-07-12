@@ -564,7 +564,7 @@ q2_meaningful <- q2_m%>%
 q2_meaningful <- dplyr::anti_join(q2_meaningful,q2_junk)
 ```
 
-##### 2.4.1.2 Dividing three events
+##### 2.4.1.2 Dividing three events and processing data separately
 
 ##### POK event
 
@@ -599,9 +599,6 @@ q2_rally$message <- str_replace_all(q2_rally$message,fixed("<"),"")
 q2_rally$message <- str_replace_all(q2_rally$message,"[\u4e00-\u9fa5]+", "")
 ```
 
-#### 2.4.2 Visualization different events
-
-##### 2.4.2.1 POK event
 
 ```{r}
 q2_rally_tidy <- q2_rally %>%
@@ -623,6 +620,61 @@ DT::datatable(q2_rally_tidy,filter = 'top',
                              dom='Bfrtip',
                              buttons=c('copy', 'csv', 'excel', 'print', 'pdf')))
 ```
+
+##### Fire in Dancing Dolphin
+
+```{r}
+q2_fire_m <- q2_meaningful %>%
+  filter(str_detect(message,"fire|dolphin|dancing|building|apartment|Madeg|dispatch|afd|floor|floors|fireman|firefighters|firefighter|evacuate|evacuated|evacuating|evacuation|trapped|injuries|scene|trapped|collapsed|blaze|escalated"))
+
+q2_fire_cc <- q2_cc %>%
+  filter(str_detect(message,"Fire|Crime|scene"))
+
+q2_fire <- rbind(q2_fire_m,q2_fire_cc)
+
+DT::datatable(q2_fire,filter = 'top',
+              extensions = 'Buttons',
+              options = list(autoWidth = TRUE, columnDefs = list(list(width = '400px', targets = c(4))),
+                             dom='Bfrtip',
+                             buttons=c('copy', 'csv', 'excel', 'print', 'pdf')))
+```
+
+```{r}
+q2_fire$message <- str_replace_all(q2_fire$message,'[[:punct:]]+', "")
+
+q2_fire$message <- str_replace_all(q2_fire$message,fixed("@"),"")
+
+q2_fire$message <- str_replace_all(q2_fire$message,fixed("#"),"")
+
+q2_fire$message <- str_replace_all(q2_fire$message,fixed("<"),"")
+
+q2_fire$message <- str_replace_all(q2_fire$message,"[\u4e00-\u9fa5]+", "")
+```
+
+```{r}
+q2_fire_tidy <- q2_fire %>%
+  unnest_tokens(word, message)
+
+data(stop_words)
+q2_fire_tidy <- q2_fire_tidy %>%
+  anti_join(stop_words)
+
+my_stopwords <- tibble(word = c("zawahiri","yikes","yehu","yeah",
+                                "yay","ya","xx3942","wuz","wow",
+                                "dr"))
+q2_fire_tidy <- q2_fire_tidy %>%
+  anti_join(my_stopwords)
+
+DT::datatable(q2_fire_tidy,filter = 'top',
+              extensions = 'Buttons',
+              options = list(autoWidth = FALSE, columnDefs = list(list(width = '60px', targets = c(0:3))),
+                             dom='Bfrtip',
+                             buttons=c('copy', 'csv', 'excel', 'print', 'pdf')))
+```
+
+#### 2.4.2 Visualization different events
+
+##### 2.4.2.1 POK event
 
 ```{r}
 q2_rally_tidy%>%
