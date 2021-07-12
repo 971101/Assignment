@@ -626,10 +626,9 @@ DT::datatable(q2_rally_tidy,filter = 'top',
 
 ```{r}
 p <- q2_rally_tidy%>%
-  filter(str_detect(word,"pokrally|pok|rally|abila |city|park|stand|sylvia|marek|audrey|mcConnell|newman|professor|lorenzo|di|stefano|lucio|jakab|viktor-e|viktor-e")) %>%
+  filter(str_detect(word,"rally")) %>%
   ggplot(aes(x = time)) +
-  geom_dotplot_interactive(aes(data_id = type),
-                           stackgroups = TRUE,
+  geom_dotplot_interactive(stackgroups = TRUE,
                            binwidth = 1,
                            method = "histodot")+
   scale_y_continuous(NULL,
