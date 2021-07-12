@@ -626,8 +626,7 @@ DT::datatable(q2_rally_tidy,filter = 'top',
 
 ```{r}
 p <- q2_rally_tidy%>%
-  filter(sub_detect(word,"pokrally|pok|rally|abila |city|park|stand|sylvia|marek|audrey|mcConnell|newman|professor|lorenzo|di|stefano|lucio|jakab|viktor-e|viktor-e")) %>%
-  count(time,word,sort = TRUE) %>%
+  filter(str_detect(word,"pokrally|pok|rally|abila |city|park|stand|sylvia|marek|audrey|mcConnell|newman|professor|lorenzo|di|stefano|lucio|jakab|viktor-e|viktor-e")) %>%
   ggplot(aes(x = time)) +
   geom_dotplot_interactive(aes(data_id = type),
                            stackgroups = TRUE,
@@ -635,7 +634,6 @@ p <- q2_rally_tidy%>%
                            method = "histodot")+
   scale_y_continuous(NULL,
                      breaks = NULL)
-
 girafe(ggobj = p,
        width_svg = 6,
        height_svg = 6*0.618)
