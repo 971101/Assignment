@@ -341,6 +341,7 @@ tidy_m %>%
   group_by(condition) %>%
   slice_max(n, n= 15) %>%
   ungroup() %>%
+  mutate(word = reorder(word,n)) %>%
   ggplot(aes(x = n,
              y= word,
              fill = condition))+
@@ -582,6 +583,44 @@ q2_rally <- rbind(q2_rally_m,q2_rally_cc)
 DT::datatable(q2_rally,filter = 'top',
               extensions = 'Buttons',
               options = list(autoWidth = TRUE, columnDefs = list(list(width = '400px', targets = c(4))),
+                             dom='Bfrtip',
+                             buttons=c('copy', 'csv', 'excel', 'print', 'pdf')))
+```
+
+```{r}
+q2_rally$message <- str_replace_all(q2_rally$message,'[[:punct:]]+', "")
+
+q2_rally$message <- str_replace_all(q2_rally$message,fixed("@"),"")
+
+q2_rally$message <- str_replace_all(q2_rally$message,fixed("#"),"")
+
+q2_rally$message <- str_replace_all(q2_rally$message,fixed("<"),"")
+
+q2_rally$message <- str_replace_all(q2_rally$message,"[\u4e00-\u9fa5]+", "")
+```
+
+#### 2.4.2 Visualization different events
+
+##### 2.4.2.1 POK event
+
+```{r}
+q2_rally_tidy <- q2_rally %>%
+  unnest_tokens(word, message)%>%
+  count(time,word,sort = TRUE)
+
+data(stop_words)
+q2_rally_tidy <- q2_rally_tidy %>%
+  anti_join(stop_words)
+
+my_stopwords <- tibble(word = c("zawahiri","yikes","yehu","yeah",
+                                "yay","ya","xx3942","wuz","wow",
+                                "dr"))
+q2_rally_tidy <- q2_rally_tidy %>%
+  anti_join(my_stopwords)
+
+DT::datatable(q2_rally_tidy,filter = 'top',
+              extensions = 'Buttons',
+              options = list(autoWidth = FALSE, columnDefs = list(list(width = '60px', targets = c(0:3))),
                              dom='Bfrtip',
                              buttons=c('copy', 'csv', 'excel', 'print', 'pdf')))
 ```
