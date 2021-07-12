@@ -141,7 +141,7 @@ df_cc <- subset(df1,type == "ccdata")
 df_cc$condition <- "meaningful"
 DT::datatable(df_cc,filter = 'top',
               extensions = 'Buttons',
-              options = list(autoWidth = TRUE, columnDefs = list(list(width = '400px', targets = c(4))),
+              options = list(autoWidth = TRUE, columnDefs = list(list(width = '400px', targets = c(3))),
                              dom='Bfrtip',
                              buttons=c('copy', 'csv', 'excel', 'print', 'pdf')))
 ```
@@ -241,7 +241,7 @@ meaningless$condition <- "meaningless"
 finalq1 <- rbind.data.frame(meaningful,junk, meaningless)
 DT::datatable(finalq1,filter = 'top',
               extensions = 'Buttons',
-              options = list(autoWidth = TRUE, columnDefs = list(list(width = '400px', targets = c(4))),
+              options = list(autoWidth = TRUE, columnDefs = list(list(width = '400px', targets = c(3))),
                              dom='Bfrtip',
                              buttons=c('copy', 'csv', 'excel', 'print', 'pdf')))
 ```
@@ -266,7 +266,7 @@ The messages in the table below is clean.
 ```{r}
 DT::datatable(finalq1,filter = 'top',
               extensions = 'Buttons',
-              options = list(autoWidth = TRUE, columnDefs = list(list(width = '400px', targets = c(4))),
+              options = list(autoWidth = TRUE, columnDefs = list(list(width = '400px', targets = c(3))),
                              dom='Bfrtip',
                              buttons=c('copy', 'csv', 'excel', 'print', 'pdf')))
 ```
@@ -518,14 +518,16 @@ m_words_cor <- tidy_m %>%
 Repeating the process above and get a whole meaningful dataset.
 
 ```{r}
-q2_junk <- df %>%
+q2_m <- subset(df, type == "mbdata")
+q2_cc <- subset(df,type == "ccdata")
+q2_junk <- q2_m %>%
   filter(str_detect(author,"KronosQuoth|Clevvah4Eva|footfingers|truccotrucco|
                   choconibbs|trollingsnark|blueSunshine|truthforcadau|whiteprotein|
                   FriendsOfKronos|junkman377|junkman995|redisrad|roger_roger|
                   cheapgoods998|rockinHW|panopticon|dels4realz|eazymoney|cleaningFish")|
            str_detect(message,"#Grammar|RT"))
 
-q2_meaningful <- df %>%
+q2_meaningful <- q2_m%>%
   filter(str_detect(author,"POK|AbilaPost|CentralBulletin|ourcountryyourrights|
   MindOfKronos|Viktor-E|maha_Homeland,anaregents|wordWatcher|InternationalNews|
   HomelandIlluminations|NewsOnlineToday|AbilaPoliceDepartment|KronosStar|magaMan|
@@ -557,7 +559,29 @@ q2_meaningful <- df %>%
                       swat|standoff|negotiating|negotiator|negoitations|Carly|
                       yelling|screaming|chasing|dude|stand-off|standoff|stand off|
                       ends|caught|over|end|ended|rescued"))
+
 q2_meaningful <- dplyr::anti_join(q2_meaningful,q2_junk)
 ```
 
 ##### 2.4.1.2 Dividing three events
+
+##### POK event
+
+pokrally,Abila City Park,Stand Up Speak Up
+Sylvia Marek, Dr. Audrey McConnell Newman, Professor Lorenzo Di Stefano, Lucio Jakab and Viktor-E
+
+```{r}
+q2_rally_m <- q2_meaningful %>%
+  filter(str_detect(message,"pokrally|Abila City Park|Stand Up Speak Up|Sylvia Marek|Audrey McConnell Newman, Professor Lorenzo Di Stefano|Lucio Jakab|Viktor-E|Sylvia|Marek|Newman|Stefano|Di Stefano|Lucio|Jakab"))
+
+q2_rally_cc <- q2_cc %>%
+  filter(str_detect(message,"ABILA CITY PARK|CROWD"))
+
+q2_rally <- rbind(q2_rally_m,q2_rally_cc)
+
+DT::datatable(q2_rally,filter = 'top',
+              extensions = 'Buttons',
+              options = list(autoWidth = TRUE, columnDefs = list(list(width = '400px', targets = c(4))),
+                             dom='Bfrtip',
+                             buttons=c('copy', 'csv', 'excel', 'print', 'pdf')))
+```
