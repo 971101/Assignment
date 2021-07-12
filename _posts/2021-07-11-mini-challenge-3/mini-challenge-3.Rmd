@@ -75,7 +75,7 @@ packages = c('readr','tidytext','data.table','lubridate','ggplot2',
              'caret','dplyr','tidyr','scales','quanteda','textdata',
              'stringr','stringi','reshape2','RColorBrewer','wordcloud',
              'forcats','igraph','ggraph','widyr','clock','knitr','tidyverse',
-             'DT','hms')
+             'DT','hms','ggiraph')
 for(p in packages){
   if(!require(p,character.only = TRUE)){
     install.packages(p)
@@ -605,8 +605,7 @@ q2_rally$message <- str_replace_all(q2_rally$message,"[\u4e00-\u9fa5]+", "")
 
 ```{r}
 q2_rally_tidy <- q2_rally %>%
-  unnest_tokens(word, message)%>%
-  count(time,word,sort = TRUE)
+  unnest_tokens(word, message)
 
 data(stop_words)
 q2_rally_tidy <- q2_rally_tidy %>%
@@ -623,4 +622,21 @@ DT::datatable(q2_rally_tidy,filter = 'top',
               options = list(autoWidth = FALSE, columnDefs = list(list(width = '60px', targets = c(0:3))),
                              dom='Bfrtip',
                              buttons=c('copy', 'csv', 'excel', 'print', 'pdf')))
+```
+
+```{r}
+p <- q2_rally_tidy%>%
+  filter(sub_detect(word,"pokrally|pok|rally|abila |city|park|stand|sylvia|marek|audrey|mcConnell|newman|professor|lorenzo|di|stefano|lucio|jakab|viktor-e|viktor-e")) %>%
+  count(time,word,sort = TRUE) %>%
+  ggplot(aes(x = time)) +
+  geom_dotplot_interactive(aes(data_id = type),
+                           stackgroups = TRUE,
+                           binwidth = 1,
+                           method = "histodot")+
+  scale_y_continuous(NULL,
+                     breaks = NULL)
+
+girafe(ggobj = p,
+       width_svg = 6,
+       height_svg = 6*0.618)
 ```
