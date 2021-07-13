@@ -76,7 +76,7 @@ packages = c('readr','tidytext','data.table','lubridate','ggplot2',
              'stringr','stringi','reshape2','RColorBrewer','wordcloud',
              'forcats','igraph','ggraph','widyr','clock','knitr','tidyverse',
              'DT','hms','ggiraph','topicmodels','raster','sf','maptools',
-             'rgdal','ggmap','sp','mapview','tmap')
+             'rgdal','ggmap','sp','mapview','tmap','gifski')
 for(p in packages){
   if(!require(p,character.only = TRUE)){
     install.packages(p)
@@ -894,7 +894,7 @@ q3_wordcount <- q3_wordcount %>%
 q3_wordcount
 
 q3_dtm <- q3_wordcount %>%
-  cast_dfm(word,word,n)
+  cast_dfm(author,word,n)
 ```
 
 ```{r}
@@ -902,20 +902,33 @@ bgmap <- raster("F:/visual/assignment and project/MC3/MC3/Geospatial/MC2-tourist
 
 abala_st <- st_read(dsn = "F:/visual/assignment and project/MC3/MC3/Geospatial",
                     layer = "Abila")
-q3_gps <- subset(q3_m,select = c("type","date(yyyyMMddHHmmss)","author",
+q3_gps <- subset(q2_meaningful,select = c("type","date(yyyyMMddHHmmss)","author",
                                  "message","latitude","longitude","time"))
 
 gps_m <- na.omit(q3_gps)
 gps_sf <- st_as_sf(gps_m,
                    coords = c("longitude","latitude"),
                    crs = 4326)
-gps_sf
-
 gps_point <- gps_sf %>%
   group_by(message) %>%
-  summarize(m = `date(yyyyMMddHHmmss)`,
+  summarize(m = time,
             do_union = FALSE) %>%
   st_cast("MULTIPOINT")
+
+q3_fire_gps <- subset(q2_fire_m,select = c("type","date(yyyyMMddHHmmss)","author",
+                                 "message","latitude","longitude","time"))
+gps_fire_m <- na.omit(q3_fire_gps)
+gps_fire_sf <- st_as_sf(gps_fire_m,
+                   coords = c("longitude","latitude"),
+                   crs = 4326)
+gps_fire_sf
+
+gps_fire_point <- gps_fire_sf %>%
+  group_by(message) %>%
+  summarize(m = `time`,
+            do_union = FALSE) %>%
+  st_cast("MULTIPOINT")
+
 ```
 
 ```{r}
@@ -927,20 +940,32 @@ tm_shape(bgmap)+
          interpolate = TRUE,
          max.value = 255) +
   tm_shape(gps_point) +
+  tm_dots(col = "red") 
+
+tmap_mode("view")
+tm_shape(bgmap)+
+  tm_rgb(r=1,g=2,b=3,
+         alpha = NA,
+         saturation = 1,
+         interpolate = TRUE,
+         max.value = 255) +
+  tm_shape(gps_fire_point) +
   tm_dots(col = "red")
+
+
 ```
 
 
 
 ```{r}
-q3_author_lda <- LDA(q3_dtm,k = 4, control = list(seed = 1234))
+q3_author_lda <- LDA(q3_dtm,k = 3, control = list(seed = 1234))
 
 q3_topics <- tidy(q3_author_lda,matrix = "beta")
 
 q3_topics
 q3_topics %>%
   group_by(topic) %>%
-  top_n(5,beta) %>%
+  top_n(10,beta) %>%
   ungroup() %>%
   arrange(topic,-beta) %>%
   ggplot(aes(beta,term,fill = topic))+
