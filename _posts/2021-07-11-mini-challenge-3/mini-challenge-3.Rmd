@@ -892,6 +892,13 @@ q3_dtm <- q3_wordcount %>%
 abala_st <- st_read(dsn = "F:/visual/assignment and project/MC3/MC3/Geospatial",
                     layer = "Abila")
 x = readShapeSpatial('F:/visual/assignment and project/MC3/MC3/Geospatial/Abila.shp')
+plot(x)
+proj4string(x) <- CRS("+proj=longlat +ellps=WGS84")
+projNew <- CRS("+proj=merc +lat_0=45n +lon_0=100e")
+xProj <- spTransform(x, projNew)
+dev.new()
+plot(xProj)
+
 q3_gps_m <- subset(q3,select = c("type","date(yyyyMMddHHmmss)","author",
                                "message","latitude","longitude","time"))
 q3_gps_cc <- subset(q3,select = c("type","date(yyyyMMddHHmmss)","author",
