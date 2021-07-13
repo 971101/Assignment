@@ -159,10 +159,10 @@ DT::datatable(df_cc,filter = 'top',
 
 ```{r}
 junk <- df_m %>%
-  filter(str_detect(author,"KronosQuoth|Clevvah4Eva|footfingers|truccotrucco|
-                  choconibbs|trollingsnark|blueSunshine|truthforcadau|whiteprotein|
-                  FriendsOfKronos|junkman377|junkman995|redisrad|roger_roger|
-                  cheapgoods998|rockinHW|panopticon|dels4realz|eazymoney|cleaningFish")|
+  filter(str_detect(author,"KronosQuoth|Clevvah4Eva|choconibbs|trollingsnark|
+                    blueSunshine|whiteprotein|FriendsOfKronos|junkman377|
+                    junkman995|redisrad|roger_roger|cheapgoods998|rockinHW|
+                    panopticon|dels4realz|eazymoney|cleaningFish")|
            str_detect(message,"#Grammar|RT"))
 ```
 
@@ -182,7 +182,8 @@ meaningful <- df_m %>%
   filter(str_detect(author,"POK|AbilaPost|CentralBulletin|ourcountryyourrights|
   MindOfKronos|Viktor-E|maha_Homeland,anaregents|wordWatcher|InternationalNews|
   HomelandIlluminations|NewsOnlineToday|AbilaPoliceDepartment|KronosStar|magaMan|
-  Sara_Nespola|protoGuy|SiaradSea|AbilaFireDept")|
+  Sara_Nespola|protoGuy|SiaradSea|AbilaFire|footfingers|truthforcadau|truccotrucco|
+  dangermice|trapanitweets|sofitees|brewvebeenserved|hennyhenhendrix")|
            str_detect(message,"POK Rally|@POK|Abila City Park|POK rally|Sylvia Marek|
                       #POKrally|#POK|#POKRally|#porkrally|terrorists|#KronosStar|
                       #Ailbapost|#IntNews|@AlibaPost|#CentralBulletin|Marek|violence|
@@ -518,17 +519,19 @@ Repeating the process above and get a whole meaningful dataset.
 q2_m <- subset(df, type == "mbdata")
 q2_cc <- subset(df,type == "ccdata")
 q2_junk <- q2_m %>%
-  filter(str_detect(author,"KronosQuoth|Clevvah4Eva|footfingers|truccotrucco|
-                  choconibbs|trollingsnark|blueSunshine|truthforcadau|whiteprotein|
-                  FriendsOfKronos|junkman377|junkman995|redisrad|roger_roger|
-                  cheapgoods998|rockinHW|panopticon|dels4realz|eazymoney|cleaningFish")|
+    filter(str_detect(author,"KronosQuoth|Clevvah4Eva|choconibbs|trollingsnark|
+                    blueSunshine|whiteprotein|FriendsOfKronos|junkman377|
+                    junkman995|redisrad|roger_roger|cheapgoods998|rockinHW|
+                    panopticon|dels4realz|eazymoney|cleaningFish")|
            str_detect(message,"#Grammar|RT"))
 
-q2_meaningful <- q2_m%>%
+
+q2_meaningful <- q2_m %>%
   filter(str_detect(author,"POK|AbilaPost|CentralBulletin|ourcountryyourrights|
   MindOfKronos|Viktor-E|maha_Homeland,anaregents|wordWatcher|InternationalNews|
   HomelandIlluminations|NewsOnlineToday|AbilaPoliceDepartment|KronosStar|magaMan|
-  Sara_Nespola|protoGuy|SiaradSea|AbilaFireDept")|
+  Sara_Nespola|protoGuy|SiaradSea|AbilaFire|footfingers|truthforcadau|truccotrucco|
+  dangermice|trapanitweets|sofitees|brewvebeenserved|hennyhenhendrix")|
            str_detect(message,"POK Rally|@POK|Abila City Park|POK rally|Sylvia Marek|
                       #POKrally|#POK|#POKRally|#porkrally|terrorists|#KronosStar|
                       #Ailbapost|#IntNews|@AlibaPost|#CentralBulletin|Marek|violence|
@@ -556,6 +559,7 @@ q2_meaningful <- q2_m%>%
                       swat|standoff|negotiating|negotiator|negoitations|Carly|
                       yelling|screaming|chasing|dude|stand-off|standoff|stand off|
                       ends|caught|over|end|ended|rescued"))
+
 
 q2_meaningful <- dplyr::anti_join(q2_meaningful,q2_junk)
 ```
@@ -871,9 +875,11 @@ q2_accident_tidy%>%
 #### 2.5.1 Data processing
 
 ```{r}
-q3_m <- subset(df, type == "mbdata")
+q3_lda <- subset(q2_meaningful,select = c("type","date(yyyyMMddHHmmss)","author",
+                                 "message","latitude","longitude","time"))
+q3_lda <- na.omit(q3_lda)
 
-tidy_q3 <- q3_m %>%
+tidy_q3 <- q3_lda %>%
   unnest_tokens(word,message)
 
 q3_wordcount <- tidy_q3 %>%
@@ -885,9 +891,10 @@ my_stopwords <- tibble(word = c("zawahiri","yikes","yehu","yeah",
 q3_wordcount <- q3_wordcount %>%
   anti_join(my_stopwords) %>%
   count(author,word,sort = TRUE)
+q3_wordcount
 
 q3_dtm <- q3_wordcount %>%
-  cast_dfm(author,word,n)
+  cast_dfm(word,word,n)
 ```
 
 ```{r}
@@ -933,7 +940,7 @@ q3_topics <- tidy(q3_author_lda,matrix = "beta")
 q3_topics
 q3_topics %>%
   group_by(topic) %>%
-  top_n(10,beta) %>%
+  top_n(5,beta) %>%
   ungroup() %>%
   arrange(topic,-beta) %>%
   ggplot(aes(beta,term,fill = topic))+
