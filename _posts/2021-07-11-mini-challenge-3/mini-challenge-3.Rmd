@@ -76,7 +76,7 @@ packages = c('readr','tidytext','data.table','lubridate','ggplot2',
              'stringr','stringi','reshape2','RColorBrewer','wordcloud',
              'forcats','igraph','ggraph','widyr','clock','knitr','tidyverse',
              'DT','hms','ggiraph','topicmodels','raster','sf','maptools',
-             'rgdal','ggmap','sp','mapview','tmap','gifski')
+             'rgdal','ggmap','sp','tmap','tmaptools')
 for(p in packages){
   if(!require(p,character.only = TRUE)){
     install.packages(p)
@@ -900,20 +900,27 @@ q3_dtm <- q3_wordcount %>%
 ```{r}
 bgmap <- raster("F:/visual/assignment and project/MC3/MC3/Geospatial/MC2-tourist.tif")
 
-abala_st <- st_read(dsn = "F:/visual/assignment and project/MC3/MC3/Geospatial",
+bgmap
+hist(bgmap)
+abila_st <- st_read(dsn = "F:/visual/assignment and project/MC3/MC3/Geospatial",
                     layer = "Abila")
+abila <- read_sf("F:/visual/assignment and project/MC3/MC3/Geospatial/Abila.shp")
+
 q3_gps <- subset(q2_meaningful,select = c("type","date(yyyyMMddHHmmss)","author",
                                  "message","latitude","longitude","time"))
 
 gps_m <- na.omit(q3_gps)
+
 gps_sf <- st_as_sf(gps_m,
                    coords = c("longitude","latitude"),
                    crs = 4326)
 gps_point <- gps_sf %>%
-  group_by(message) %>%
-  summarize(m = time,
+    group_by(message) %>%
+  summarize(m = `time`,
             do_union = FALSE) %>%
   st_cast("MULTIPOINT")
+
+gps_point
 
 q3_fire_gps <- subset(q2_fire_m,select = c("type","date(yyyyMMddHHmmss)","author",
                                  "message","latitude","longitude","time"))
@@ -932,15 +939,26 @@ gps_fire_point <- gps_fire_sf %>%
 ```
 
 ```{r}
+p <- gps_m %>%
+  count(longitude,latitude)
+p$n <- as.numeric(p$n)
+p
+
+gps_sf <- st_as_sf(p,
+                   coords = c("longitude","latitude"),
+                   crs = 4326)
+gps_point <- gps_sf %>%
+  st_cast("MULTIPOINT")
+
 tmap_mode("view")
-tm_shape(bgmap)+
+tm_shape(bgmap,point.per = "feature")+
   tm_rgb(r=1,g=2,b=3,
          alpha = NA,
          saturation = 1,
          interpolate = TRUE,
          max.value = 255) +
-  tm_shape(gps_point) +
-  tm_dots(col = "red") 
+  tm_shape(gps_point,is.master = TRUE, point.per = 'feature')+
+  tm_dots(size ="n")
 
 tmap_mode("view")
 tm_shape(bgmap)+
