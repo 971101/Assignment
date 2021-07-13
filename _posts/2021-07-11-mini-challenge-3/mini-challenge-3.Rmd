@@ -75,7 +75,7 @@ packages = c('readr','tidytext','data.table','lubridate','ggplot2',
              'caret','dplyr','tidyr','scales','quanteda','textdata',
              'stringr','stringi','reshape2','RColorBrewer','wordcloud',
              'forcats','igraph','ggraph','widyr','clock','knitr','tidyverse',
-             'DT','hms','ggiraph','topicmodels')
+             'DT','hms','ggiraph','topicmodels','raster','sf','maptools','rgdal')
 for(p in packages){
   if(!require(p,character.only = TRUE)){
     install.packages(p)
@@ -886,7 +886,27 @@ q3_wordcount <- q3_wordcount %>%
 
 q3_dtm <- q3_wordcount %>%
   cast_dfm(author,word,n)
+```
 
+```{r}
+abala_st <- st_read(dsn = "F:/visual/assignment and project/MC3/MC3/Geospatial",
+                    layer = "Abila")
+x = readShapeSpatial('F:/visual/assignment and project/MC3/MC3/Geospatial/Abila.shp')
+q3_gps_m <- subset(q3,select = c("type","date(yyyyMMddHHmmss)","author",
+                               "message","latitude","longitude","time"))
+q3_gps_cc <- subset(q3,select = c("type","date(yyyyMMddHHmmss)","author",
+                               "message","location","time"))
+gps_m <- na.omit(q3_gps_m)
+gps_sf <- st_as_sf(gps_m,
+                   coords = c("longitude","latitude"),
+                   crs = 4326)
+
+gps_cc <- na.omit(q3_gps_cc)
+```
+
+
+
+```{r}
 q3_author_lda <- LDA(q3_dtm,k = 4, control = list(seed = 1234))
 
 q3_topics <- tidy(q3_author_lda,matrix = "beta")
@@ -894,7 +914,7 @@ q3_topics <- tidy(q3_author_lda,matrix = "beta")
 q3_topics
 q3_topics %>%
   group_by(topic) %>%
-  top_n(5,beta) %>%
+  top_n(10,beta) %>%
   ungroup() %>%
   arrange(topic,-beta) %>%
   ggplot(aes(beta,term,fill = topic))+
