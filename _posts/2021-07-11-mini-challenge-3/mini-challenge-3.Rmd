@@ -75,7 +75,8 @@ packages = c('readr','tidytext','data.table','lubridate','ggplot2',
              'caret','dplyr','tidyr','scales','quanteda','textdata',
              'stringr','stringi','reshape2','RColorBrewer','wordcloud',
              'forcats','igraph','ggraph','widyr','clock','knitr','tidyverse',
-             'DT','hms','ggiraph','topicmodels','raster','sf','maptools','rgdal')
+             'DT','hms','ggiraph','topicmodels','raster','sf','maptools',
+             'rgdal','ggmap','sp','mapview','tmap')
 for(p in packages){
   if(!require(p,character.only = TRUE)){
     install.packages(p)
@@ -870,8 +871,9 @@ q2_accident_tidy%>%
 #### 2.5.1 Data processing
 
 ```{r}
-q3 <- rbind(q2_meaningful,q2_cc)
-tidy_q3 <- q3 %>%
+q3_m <- subset(df, type == "mbdata")
+
+tidy_q3 <- q3_m %>%
   unnest_tokens(word,message)
 
 q3_wordcount <- tidy_q3 %>%
@@ -889,26 +891,36 @@ q3_dtm <- q3_wordcount %>%
 ```
 
 ```{r}
+bgmap <- raster("F:/visual/assignment and project/MC3/MC3/Geospatial/MC2-tourist.tif")
+
 abala_st <- st_read(dsn = "F:/visual/assignment and project/MC3/MC3/Geospatial",
                     layer = "Abila")
-x = readShapeSpatial('F:/visual/assignment and project/MC3/MC3/Geospatial/Abila.shp')
-plot(x)
-proj4string(x) <- CRS("+proj=longlat +ellps=WGS84")
-projNew <- CRS("+proj=merc +lat_0=45n +lon_0=100e")
-xProj <- spTransform(x, projNew)
-dev.new()
-plot(xProj)
+q3_gps <- subset(q3_m,select = c("type","date(yyyyMMddHHmmss)","author",
+                                 "message","latitude","longitude","time"))
 
-q3_gps_m <- subset(q3,select = c("type","date(yyyyMMddHHmmss)","author",
-                               "message","latitude","longitude","time"))
-q3_gps_cc <- subset(q3,select = c("type","date(yyyyMMddHHmmss)","author",
-                               "message","location","time"))
-gps_m <- na.omit(q3_gps_m)
+gps_m <- na.omit(q3_gps)
 gps_sf <- st_as_sf(gps_m,
                    coords = c("longitude","latitude"),
                    crs = 4326)
+gps_sf
 
-gps_cc <- na.omit(q3_gps_cc)
+gps_point <- gps_sf %>%
+  group_by(message) %>%
+  summarize(m = `date(yyyyMMddHHmmss)`,
+            do_union = FALSE) %>%
+  st_cast("MULTIPOINT")
+```
+
+```{r}
+tmap_mode("view")
+tm_shape(bgmap)+
+  tm_rgb(r=1,g=2,b=3,
+         alpha = NA,
+         saturation = 1,
+         interpolate = TRUE,
+         max.value = 255) +
+  tm_shape(gps_point) +
+  tm_dots(col = "red")
 ```
 
 
