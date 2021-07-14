@@ -619,10 +619,48 @@ q2_meaningful <- dplyr::anti_join(q2_meaningful,q2_junk)
 
 ##### 2.4.1.2 Dividing three events and processing data separately
 
+##### Try to do LDA on the meaningful dataset, but the results of LDA is not good. So change to use the key words to define each event.
+
+```{r}
+q3_lda <- subset(q2_meaningful,select = c("type","date(yyyyMMddHHmmss)","author",
+                                 "message","latitude","longitude","time"))
+q3_lda <- na.omit(q3_lda)
+
+tidy_q3 <- q3_lda %>%
+  unnest_tokens(word,message)
+
+q3_wordcount <- tidy_q3 %>%
+  anti_join(stop_words)
+
+my_stopwords <- tibble(word = c("zawahiri","yikes","yehu","yeah",
+                                "yay","ya","xx3942","wuz","wow",
+                                "dr"))
+q3_wordcount <- q3_wordcount %>%
+  anti_join(my_stopwords) %>%
+  count(author,word,sort = TRUE)
+q3_wordcount
+
+q3_dtm <- q3_wordcount %>%
+  cast_dfm(author,word,n)
+
+q3_author_lda <- LDA(q3_dtm,k = 3, control = list(seed = 1234))
+
+q3_topics <- tidy(q3_author_lda,matrix = "beta")
+
+q3_topics
+q3_topics %>%
+  group_by(topic) %>%
+  top_n(10,beta) %>%
+  ungroup() %>%
+  arrange(topic,-beta) %>%
+  ggplot(aes(beta,term,fill = topic))+
+  geom_col(show.legend = FALSE)+
+  facet_wrap(~topic,ncol = 2,scales = "free")
+```
+
 ##### POK event
 
-pokrally,Abila City Park,Stand Up Speak Up
-Sylvia Marek, Dr. Audrey McConnell Newman, Professor Lorenzo Di Stefano, Lucio Jakab and Viktor-E
+Using the important words of pok rally event to choose the pok rally relevant messages from the meaningful dataset. 
 
 ```{r}
 q2_rally_m <- q2_meaningful %>%
@@ -640,6 +678,8 @@ DT::datatable(q2_rally,filter = 'top',
                              buttons=c('copy', 'csv', 'excel', 'print', 'pdf')))
 ```
 
+Clean the message content.
+
 ```{r}
 q2_rally$message <- str_replace_all(q2_rally$message,'[[:punct:]]+', "")
 
@@ -652,6 +692,7 @@ q2_rally$message <- str_replace_all(q2_rally$message,fixed("<"),"")
 q2_rally$message <- str_replace_all(q2_rally$message,"[\u4e00-\u9fa5]+", "")
 ```
 
+Token the dataset.
 
 ```{r}
 q2_rally_tidy <- q2_rally %>%
@@ -675,6 +716,8 @@ DT::datatable(q2_rally_tidy,filter = 'top',
 ```
 
 ##### Fire in Dancing Dolphin
+
+Using the important words of "Fire in Dancing Dolphin" event to choose the fire relevant messages from the meaningful dataset. 
 
 ```{r}
 q2_fire_m <- q2_meaningful %>%
@@ -926,29 +969,6 @@ q2_accident_tidy%>%
 ### 2.5 Question 3
 
 #### 2.5.1 Data processing
-
-```{r}
-q3_lda <- subset(q2_meaningful,select = c("type","date(yyyyMMddHHmmss)","author",
-                                 "message","latitude","longitude","time"))
-q3_lda <- na.omit(q3_lda)
-
-tidy_q3 <- q3_lda %>%
-  unnest_tokens(word,message)
-
-q3_wordcount <- tidy_q3 %>%
-  anti_join(stop_words)
-
-my_stopwords <- tibble(word = c("zawahiri","yikes","yehu","yeah",
-                                "yay","ya","xx3942","wuz","wow",
-                                "dr"))
-q3_wordcount <- q3_wordcount %>%
-  anti_join(my_stopwords) %>%
-  count(author,word,sort = TRUE)
-q3_wordcount
-
-q3_dtm <- q3_wordcount %>%
-  cast_dfm(author,word,n)
-```
 
 ```{r}
 bgmap <- raster("F:/visual/assignment and project/MC3/MC3/Geospatial/MC2-tourist.tif")
