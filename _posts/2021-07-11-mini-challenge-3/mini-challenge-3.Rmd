@@ -110,7 +110,7 @@ df <- rbind.data.frame(read1,read2,read3)
 glimpse(df)
 DT::datatable(df,filter = 'top',
               extensions = 'Buttons',
-              options = list(autoWidth = FALSE, columnDefs = list(list(width = '500px',targets = c(4))),
+              options = list(autoWidth = FALSE, columnDefs = list(list(width = '400px',targets = c(4))),
                              dom='Bfrtip',
                              buttons=c('copy', 'csv', 'excel', 'print', 'pdf'))) 
 ```
