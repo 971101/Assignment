@@ -110,7 +110,8 @@ df <- rbind.data.frame(read1,read2,read3)
 glimpse(df)
 DT::datatable(df,filter = 'top',
               extensions = 'Buttons',
-              options = list(autoWidth = TRUE, columnDefs = list(list(width = '400px', targets = c(4))),
+              options = list(autoWidth = TRUE, columnDefs = list(list(width = '400px', 
+                                                                      targets = c(4))),
                              dom='Bfrtip',
                              buttons=c('copy', 'csv', 'excel', 'print', 'pdf'))) 
 ```
@@ -125,7 +126,8 @@ df$time <- as_hms(ymd_hms((df$`date(yyyyMMddHHmmss)`)))
 glimpse(df)
 DT::datatable(df,filter = 'top',
               extensions = 'Buttons',
-              options = list(autoWidth = TRUE, columnDefs = list(list(width = '400px', targets = c(4))),
+              options = list(autoWidth = TRUE, columnDefs = list(list(width = '400px', 
+                                                                      targets = c(4))),
                              dom='Bfrtip',
                              buttons=c('copy', 'csv', 'excel', 'print', 'pdf')))
 ```
@@ -142,7 +144,8 @@ df_cc <- subset(df1,type == "ccdata")
 df_cc$condition <- "meaningful"
 DT::datatable(df_cc,filter = 'top',
               extensions = 'Buttons',
-              options = list(autoWidth = TRUE, columnDefs = list(list(width = '400px', targets = c(3))),
+              options = list(autoWidth = TRUE, columnDefs = list(list(width = '400px', 
+                                                                      targets = c(3))),
                              dom='Bfrtip',
                              buttons=c('copy', 'csv', 'excel', 'print', 'pdf')))
 ```
@@ -265,6 +268,7 @@ finalq1$message <- str_replace_all(finalq1$message,"[\u4e00-\u9fa5]+", "")
 ```
 
 The messages in the table below is clean.
+
 ```{r}
 DT::datatable(finalq1,filter = 'top',
               extensions = 'Buttons',
@@ -275,6 +279,8 @@ DT::datatable(finalq1,filter = 'top',
 
 
 ##### 2.3.1.6 Token the data and custom stop-words.
+
+Exclude stop words from the text and use <font color = blue>*tibble()*</font> to custom stop words selected according to the content of the text.
 
 ```{r}
 tidy_m <- finalq1 %>%
@@ -323,7 +329,7 @@ The graph below is the top 15 word(n) of junk,meaningful and meaningless group.
 
 * Junk group
 
-    * Most of them are words related to POK Rally, used to vent feelings or words related to success. There are also statements against the government and police. Words like "success","life","police".
+    * Most of them are words related to POK Rally, used to vent feelings or words related to success. There are also statements against the government and police. Words like "success","life".
     
     * There are also obvious spam features such as rt and grammar. These message number is very large and do not provide useful information.
     
@@ -335,20 +341,25 @@ The graph below is the top 15 word(n) of junk,meaningful and meaningless group.
     
     * Words can provide information on the important locations of the events. words like "dolphin","dancing".
     
-* Meaningless group    
+* Meaningless group  
+ 
+    * Content sent by individuals for certain purposes.
     
+    * Content sent by businesses to promote their company or products.
     
 ```{r}
 tidy_m %>%
   group_by(condition) %>%
   slice_max(n, n= 15) %>%
   ungroup() %>%
-  mutate(word = reorder(word,n)) %>%
+  mutate(word = reorder_within(word,n,condition)) %>%
   ggplot(aes(x = n,
              y= word,
-             fill = condition))+
+             fill =condition))+
   geom_col(show.legend = FALSE)+
+  scale_y_reordered()+
   facet_wrap(~ condition, ncol = 2,scales = "free")
+
 ```
 
 The graph of <font color = red>*ccdata*</font> shows that the events like "fire","traffic".
