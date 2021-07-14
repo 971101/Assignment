@@ -689,7 +689,7 @@ q2_topics3 <- tidy(q2_author_lda3,matrix = "beta")
 q2_topics3
 q2_topics3 %>%
   group_by(topic) %>%
-  top_n(10,beta) %>%
+  top_n(5,beta) %>%
   ungroup() %>%
   mutate(term = reorder_within(term,beta,topic)) %>%
   ggplot(aes(beta,term,fill = topic))+
@@ -942,6 +942,7 @@ q2_fire_tidy%>%
   filter(str_detect(word,"fire|dolphin|dancing|building|apartment")) %>%
   ggplot(aes(x = time)) +
   geom_histogram()+
+  coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
     labs(y = NULL)
  
@@ -949,6 +950,7 @@ q2_fire_tidy%>%
   filter(str_detect(word,"floor|floors|upper||resident|trapped")) %>%
   ggplot(aes(x = time)) +
   geom_histogram()+
+  coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
     labs(y =NULL)
 
@@ -956,6 +958,7 @@ q2_fire_tidy%>%
   filter(str_detect(word,"afd|police|cop|cops|fireman|firefighter")) %>%
   ggplot(aes(x = time)) +
   geom_histogram()+
+  coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
     labs(y =NULL)
 
@@ -963,6 +966,7 @@ q2_fire_tidy%>%
   filter(str_detect(word,"ambulance|injury|injuries|evacuated|evacuating|evacuation|evacuate")) %>%
   ggplot(aes(x = time)) +
   geom_histogram()+
+  coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
   labs(y =NULL)
 
@@ -970,6 +974,7 @@ q2_fire_tidy%>%
   filter(str_detect(word,"control")) %>%
   ggplot(aes(x = time)) +
   geom_histogram()+
+  coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
   labs(y = "control")
 
@@ -977,6 +982,7 @@ q2_fire_tidy%>%
   filter(str_detect(word,"collapsed|blaze|escalated|explosion")) %>%
   ggplot(aes(x = time)) +
   geom_histogram()+
+  coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
   labs(y =NULL)
 ```
