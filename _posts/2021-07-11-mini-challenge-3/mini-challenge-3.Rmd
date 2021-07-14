@@ -421,7 +421,7 @@ tidy_cc %>%
 
 ##### 2.3.3.2 tf-idf visualization
 
-Calculate the <font color = blue>*bind_tf_idf()*</font> to find the important words for the content of each document.
+Use the <font color = blue>*bind_tf_idf()*</font> to find the important words for the different categories.
 
 * Junk: The graph shows that for junk message, retweets(like "rt"), social media accounts(like "kronosstar") and emotive(like "success") words are important component.
 
@@ -454,8 +454,11 @@ m_tf_idf %>%
 
 ##### 2.3.3.3 Bigrams visualization
 
-```{r}
+Use the <font color = blue>*bigram*</font> to find the important phrases for the different categories.
 
+Actually,there is no big difference for these three categories. But meaningful messages contain more specific time and place phrases.
+
+```{r}
 meaningful_bigrams <- meaningful %>%
   unnest_tokens(bigram,message,token = "ngrams", n = 2)
 meaningful_bigrams %>%
@@ -534,17 +537,15 @@ ggraph(meaningful_graph,layout = "fr")+
 
 ```
 
-##### 2.3.3.4 Cor visualization
-
-```{r}
-m_words_cor <- tidy_m %>%
-  group_by(condition) %>%
-  filter(n()>=20) %>%
-  pairwise_cor(word,condition,sort = TRUE)
+#### 2.3.4 Question 1 conclusion
 
 
-```
 
+### 2. 4 Question 2  
+
+#### 2.4.1 Data preparation
+
+##### 2.4.1.1 Getting a whole meaningful data
 
 Repeating the process above and get a whole meaningful dataset.
 
