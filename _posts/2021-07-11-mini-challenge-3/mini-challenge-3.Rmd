@@ -281,8 +281,9 @@ Exclude stop words from the text and use <font color = blue>*tibble()*</font> to
 
 ```{r}
 tidy_m <- finalq1 %>%
-  unnest_tokens(word, message)%>%
+  unnest_tokens(word, message) %>%
   count(condition,word,sort = TRUE)
+
 
 data(stop_words)
 tidy_m <- tidy_m %>%
@@ -622,40 +623,83 @@ q2_meaningful <- dplyr::anti_join(q2_meaningful,q2_junk)
 ##### Try to do LDA on the meaningful dataset, but the results of LDA is not good. So change to use the key words to define each event.
 
 ```{r}
-q3_lda <- subset(q2_meaningful,select = c("type","date(yyyyMMddHHmmss)","author",
+q2_lda <- subset(q2_meaningful,select = c("type","date(yyyyMMddHHmmss)","author",
                                  "message","latitude","longitude","time"))
-q3_lda <- na.omit(q3_lda)
+q2_lda <- na.omit(q2_lda)
 
-tidy_q3 <- q3_lda %>%
+tidy_q2 <- q2_lda %>%
   unnest_tokens(word,message)
 
-q3_wordcount <- tidy_q3 %>%
+q2_wordcount <- tidy_q2 %>%
   anti_join(stop_words)
 
 my_stopwords <- tibble(word = c("zawahiri","yikes","yehu","yeah",
                                 "yay","ya","xx3942","wuz","wow",
                                 "dr"))
-q3_wordcount <- q3_wordcount %>%
+q2_wordcount <- q2_wordcount %>%
   anti_join(my_stopwords) %>%
   count(author,word,sort = TRUE)
-q3_wordcount
+q2_wordcount
 
-q3_dtm <- q3_wordcount %>%
+q2_dtm <- q2_wordcount %>%
   cast_dfm(author,word,n)
 
-q3_author_lda <- LDA(q3_dtm,k = 3, control = list(seed = 1234))
+q2_author_lda <- LDA(q2_dtm,k = 3, control = list(seed = 1234))
 
-q3_topics <- tidy(q3_author_lda,matrix = "beta")
+q2_topics <- tidy(q2_author_lda,matrix = "beta")
 
-q3_topics
-q3_topics %>%
+q2_topics
+q2_topics %>%
   group_by(topic) %>%
   top_n(10,beta) %>%
   ungroup() %>%
-  arrange(topic,-beta) %>%
+  mutate(term = reorder_within(term,beta,topic)) %>%
   ggplot(aes(beta,term,fill = topic))+
+  scale_y_reordered()+
   geom_col(show.legend = FALSE)+
-  facet_wrap(~topic,ncol = 2,scales = "free")
+  facet_wrap(~topic,ncol = 2,scales = "free")+
+  ggtitle("meaningful") +
+  theme(plot.title = element_text(size=10,
+                                  hjust = 0.4))+
+  labs(y = NULL)
+
+q2_author_lda2 <- LDA(q2_dtm,k = 4, control = list(seed = 1234))
+
+q2_topics2 <- tidy(q2_author_lda2,matrix = "beta")
+
+q2_topics2
+q2_topics2 %>%
+  group_by(topic) %>%
+  top_n(10,beta) %>%
+  ungroup() %>%
+  mutate(term = reorder_within(term,beta,topic)) %>%
+  ggplot(aes(beta,term,fill = topic))+
+  scale_y_reordered()+
+  geom_col(show.legend = FALSE)+
+  facet_wrap(~topic,ncol = 2,scales = "free")+
+  ggtitle("meaningful") +
+  theme(plot.title = element_text(size=10,
+                                  hjust = 0.4))+
+  labs(y = NULL)
+
+q2_author_lda3 <- LDA(q2_dtm,k = 5, control = list(seed = 1234))
+
+q2_topics3 <- tidy(q2_author_lda3,matrix = "beta")
+
+q2_topics3
+q2_topics3 %>%
+  group_by(topic) %>%
+  top_n(10,beta) %>%
+  ungroup() %>%
+  mutate(term = reorder_within(term,beta,topic)) %>%
+  ggplot(aes(beta,term,fill = topic))+
+  scale_y_reordered()+
+  geom_col(show.legend = FALSE)+
+  facet_wrap(~topic,ncol = 2,scales = "free")+
+  ggtitle("meaningful") +
+  theme(plot.title = element_text(size=10,
+                                  hjust = 0.4))+
+  labs(y = NULL)
 ```
 
 ##### POK event
@@ -735,6 +779,8 @@ DT::datatable(q2_fire,filter = 'top',
                              buttons=c('copy', 'csv', 'excel', 'print', 'pdf')))
 ```
 
+Clean the message content.
+
 ```{r}
 q2_fire$message <- str_replace_all(q2_fire$message,'[[:punct:]]+', "")
 
@@ -746,6 +792,8 @@ q2_fire$message <- str_replace_all(q2_fire$message,fixed("<"),"")
 
 q2_fire$message <- str_replace_all(q2_fire$message,"[\u4e00-\u9fa5]+", "")
 ```
+
+Token the dataset.
 
 ```{r}
 q2_fire_tidy <- q2_fire %>%
@@ -770,6 +818,8 @@ DT::datatable(q2_fire_tidy,filter = 'top',
 
 ##### From hit-and-run accident to shooting and standoff
 
+Using the important words of "From hit-and-run accident to shooting and standoff" event to choose the fire relevant messages from the meaningful dataset. 
+
 ```{r}
 q2_accident_m <- q2_meaningful %>%
   filter(str_detect(message,"shooting|stanoff|hostage|swat|negotiation|fight|arrest|hit|van| driver|bicyclist|accident|incident|bike|L829|pursuit|gun|shot|kill|dead|yelling|screaming|negotiatingnegotiator|caught|over|end|shoot|shot|chasing"))
@@ -786,6 +836,8 @@ DT::datatable(q2_accident,filter = 'top',
                              buttons=c('copy', 'csv', 'excel', 'print', 'pdf')))
 ```
 
+Clean the message content.
+
 ```{r}
 q2_accident$message <- str_replace_all(q2_accident$message,'[[:punct:]]+', "")
 
@@ -797,6 +849,8 @@ q2_accident$message <- str_replace_all(q2_accident$message,fixed("<"),"")
 
 q2_accident$message <- str_replace_all(q2_accident$message,"[\u4e00-\u9fa5]+", "")
 ```
+
+Token the dataset.
 
 ```{r}
 q2_accident_tidy <- q2_accident %>%
@@ -1046,20 +1100,3 @@ tm_shape(bgmap)+
 
 ```
 
-
-
-```{r}
-q3_author_lda <- LDA(q3_dtm,k = 3, control = list(seed = 1234))
-
-q3_topics <- tidy(q3_author_lda,matrix = "beta")
-
-q3_topics
-q3_topics %>%
-  group_by(topic) %>%
-  top_n(10,beta) %>%
-  ungroup() %>%
-  arrange(topic,-beta) %>%
-  ggplot(aes(beta,term,fill = topic))+
-  geom_col(show.legend = FALSE)+
-  facet_wrap(~topic,ncol = 2,scales = "free")
-```
