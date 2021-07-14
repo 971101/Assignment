@@ -882,6 +882,7 @@ q2_rally_tidy%>%
   filter(str_detect(word,"rally")) %>%
   ggplot(aes(x = time)) +
   geom_histogram()+
+  coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
     labs(y ="rally")
  
@@ -889,6 +890,7 @@ q2_rally_tidy%>%
   filter(str_detect(word,"pok")) %>%
   ggplot(aes(x = time)) +
   geom_histogram()+
+  coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
     labs(y ="pok")
 
@@ -896,6 +898,7 @@ q2_rally_tidy%>%
   filter(str_detect(word,"sylvia|marek")) %>%
   ggplot(aes(x = time)) +
   geom_histogram()+
+  coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
     labs(y ="sylvia|marek")
 
@@ -903,6 +906,7 @@ q2_rally_tidy%>%
   filter(str_detect(word,"audrey|mcConnell|newman")) %>%
   ggplot(aes(x = time)) +
   geom_histogram()+
+  coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
   labs(y ="audrey|mcConnell|newman")
 
@@ -910,6 +914,7 @@ q2_rally_tidy%>%
   filter(str_detect(word,"lucio|jakab")) %>%
   ggplot(aes(x = time)) +
   geom_histogram()+
+  coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
   labs(y ="audrey|mcConnell|newman")
 
@@ -917,6 +922,7 @@ q2_rally_tidy%>%
   filter(str_detect(word,"lorenzo|di|stefano")) %>%
   ggplot(aes(x = time)) +
   geom_histogram()+
+  coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
   labs(y ="lorenzo|di|stefano")
 
@@ -924,6 +930,7 @@ q2_rally_tidy%>%
   filter(str_detect(word,"viktor")) %>%
   ggplot(aes(x = time)) +
   geom_histogram()+
+  coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
   labs(y ="viktor")
 ```
