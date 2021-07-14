@@ -76,7 +76,7 @@ packages = c('readr','tidytext','data.table','lubridate','ggplot2',
              'stringr','stringi','reshape2','RColorBrewer','wordcloud',
              'forcats','igraph','ggraph','widyr','clock','knitr','tidyverse',
              'DT','hms','ggiraph','topicmodels','raster','sf','maptools',
-             'rgdal','ggmap','sp','tmap','tmaptools')
+             'rgdal','ggmap','sp','tmap','tmaptools','devtools','patchwork')
 for(p in packages){
   if(!require(p,character.only = TRUE)){
     install.packages(p)
@@ -881,15 +881,15 @@ DT::datatable(q2_accident_tidy,filter = 'top',
 q2_rally_tidy%>%
   filter(str_detect(word,"rally")) %>%
   ggplot(aes(x = time)) +
-  geom_histogram()+
+  geom_histogram(fill = "#99CCFF",color ="#FFFFFF")+
   coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
-    labs(y ="rally")
+  labs(y ="rally")
  
 q2_rally_tidy%>%
   filter(str_detect(word,"pok")) %>%
   ggplot(aes(x = time)) +
-  geom_histogram()+
+  geom_histogram(fill = "#99CCFF",color ="#FFFFFF")+
   coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
     labs(y ="pok")
@@ -897,10 +897,18 @@ q2_rally_tidy%>%
 q2_rally_tidy%>%
   filter(str_detect(word,"sylvia|marek")) %>%
   ggplot(aes(x = time)) +
-  geom_histogram()+
+  geom_histogram(fill = "#6699CC",color ="#FFFFFF")+
   coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
     labs(y ="sylvia|marek")
+
+q2_rally_tidy%>%
+  filter(str_detect(word,"viktor")) %>%
+  ggplot(aes(x = time)) +
+  geom_histogram(fill = "#6699CC",color ="#FFFFFF")+
+  coord_cartesian(xlim = c(61200,77460))+
+  theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
+  labs(y ="viktor")
 
 q2_rally_tidy%>%
   filter(str_detect(word,"audrey|mcConnell|newman")) %>%
@@ -913,7 +921,7 @@ q2_rally_tidy%>%
 q2_rally_tidy%>%
   filter(str_detect(word,"lucio|jakab")) %>%
   ggplot(aes(x = time)) +
-  geom_histogram()+
+  geom_histogram(fill = "#6699CC",color ="#FFFFFF")+
   coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
   labs(y ="audrey|mcConnell|newman")
@@ -921,18 +929,11 @@ q2_rally_tidy%>%
 q2_rally_tidy%>%
   filter(str_detect(word,"lorenzo|di|stefano")) %>%
   ggplot(aes(x = time)) +
-  geom_histogram()+
+  geom_histogram(fill = "#6699CC",color ="#FFFFFF")+
   coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
   labs(y ="lorenzo|di|stefano")
 
-q2_rally_tidy%>%
-  filter(str_detect(word,"viktor")) %>%
-  ggplot(aes(x = time)) +
-  geom_histogram()+
-  coord_cartesian(xlim = c(61200,77460))+
-  theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
-  labs(y ="viktor")
 ```
 
 ##### 2.4.2.2 Fire in Dancing Dolphin
@@ -941,7 +942,7 @@ q2_rally_tidy%>%
 q2_fire_tidy%>%
   filter(str_detect(word,"fire|dolphin|dancing|building|apartment")) %>%
   ggplot(aes(x = time)) +
-  geom_histogram()+
+  geom_histogram(fill = "#FFCCCC",color ="#FFFFFF")+
   coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
     labs(y = NULL)
@@ -949,7 +950,7 @@ q2_fire_tidy%>%
 q2_fire_tidy%>%
   filter(str_detect(word,"floor|floors|upper||resident|trapped")) %>%
   ggplot(aes(x = time)) +
-  geom_histogram()+
+  geom_histogram(fill = "#FFCCCC",color ="#FFFFFF")+
   coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
     labs(y =NULL)
@@ -957,7 +958,7 @@ q2_fire_tidy%>%
 q2_fire_tidy%>%
   filter(str_detect(word,"afd|police|cop|cops|fireman|firefighter")) %>%
   ggplot(aes(x = time)) +
-  geom_histogram()+
+  geom_histogram(fill = "#FFCCCC",color ="#FFFFFF")+
   coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
     labs(y =NULL)
@@ -965,7 +966,7 @@ q2_fire_tidy%>%
 q2_fire_tidy%>%
   filter(str_detect(word,"ambulance|injury|injuries|evacuated|evacuating|evacuation|evacuate")) %>%
   ggplot(aes(x = time)) +
-  geom_histogram()+
+  geom_histogram(fill = "#FF99CC",color ="#FFFFFF")+
   coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
   labs(y =NULL)
@@ -973,7 +974,7 @@ q2_fire_tidy%>%
 q2_fire_tidy%>%
   filter(str_detect(word,"control")) %>%
   ggplot(aes(x = time)) +
-  geom_histogram()+
+  geom_histogram(fill = "#CC6699",color ="#FFFFFF")+
   coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
   labs(y = "control")
@@ -981,7 +982,7 @@ q2_fire_tidy%>%
 q2_fire_tidy%>%
   filter(str_detect(word,"collapsed|blaze|escalated|explosion")) %>%
   ggplot(aes(x = time)) +
-  geom_histogram()+
+  geom_histogram(fill = "#993366",color ="#FFFFFF")+
   coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
   labs(y =NULL)
@@ -994,6 +995,7 @@ q2_accident_tidy%>%
   filter(str_detect(word,"hit|run|van|bicyclist|driver|incident|accident|bike|pursuit")) %>%
   ggplot(aes(x = time)) +
   geom_histogram()+
+  coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
     labs(y = NULL)
  
@@ -1001,6 +1003,7 @@ q2_accident_tidy%>%
   filter(str_detect(word,"gun|shoot|shot|histage")) %>%
   ggplot(aes(x = time)) +
   geom_histogram()+
+  coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
     labs(y =NULL)
 
@@ -1008,27 +1011,23 @@ q2_accident_tidy%>%
   filter(str_detect(word,"killed||dead")) %>%
   ggplot(aes(x = time)) +
   geom_histogram()+
+  coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
     labs(y =NULL)
 
 q2_accident_tidy%>%
-  filter(str_detect(word,"standoff|negotiating|negotiate|negotiator|negotiation|")) %>%
+  filter(str_detect(word,"standoff|negotiating|negotiate|negotiator|negotiation|yelling|screaming|chasing")) %>%
   ggplot(aes(x = time)) +
   geom_histogram()+
+  coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
   labs(y =NULL)
 
 q2_accident_tidy%>%
-  filter(str_detect(word,"yelling|screaming|chasing|standoff")) %>%
+  filter(str_detect(word,"end|over|ocaught|rescued")) %>%
   ggplot(aes(x = time)) +
   geom_histogram()+
-  theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
-  labs(y = "control")
-
-q2_accident_tidy%>%
-  filter(str_detect(word,"end|over|caught|rescued")) %>%
-  ggplot(aes(x = time)) +
-  geom_histogram()+
+  coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
   labs(y =NULL)
 ```
