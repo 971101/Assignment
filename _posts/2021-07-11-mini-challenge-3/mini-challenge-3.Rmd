@@ -346,7 +346,7 @@ The graph below is the top 15 word(n) of junk,meaningful and meaningless group.
  
     * Content sent by individuals for certain purposes.
     
-    * Content sent by businesses to promote their company or products. Word like "credit" is issued to promote a credit card
+    * Content sent by businesses to promote their company or products. Word like "credit" is issued to promote a credit card.
     
 ```{r}
 tidy_m %>%
@@ -365,10 +365,9 @@ tidy_m %>%
   theme(plot.title = element_text(size=10,
                                   hjust = 0.4))+
   labs(y = NULL)
-
 ```
 
-The graph of <font color = red>*ccdata*</font> shows that the events like "fire","traffic".
+The graph of <font color = red>*ccdata*</font> shows that the events like "fire","traffic". Word like "vehicle" is issued to the event--"From hit-and-run accident to shooting and standoff".
 
 ```{r}
 tidy_cc %>%
@@ -387,7 +386,7 @@ tidy_cc %>%
 
 ##### 2.3.3.1 Wordcloud
 
-The conclusion is similar to Simple EDA.
+The conclusion is similar to Simple EDA. 
 
 ```{r}
 wordcloud_m <- tidy_m
@@ -422,6 +421,14 @@ tidy_cc %>%
 
 ##### 2.3.3.2 tf-idf visualization
 
+Calculate the <font color = blue>*bind_tf_idf()*</font> to find the important words for the content of each document.
+
+* Junk: The graph shows that for junk message, retweets(like "rt"), social media accounts(like "kronosstar") and emotive(like "success") words are important component.
+
+* Meaningful: The graph shows that for meaningful message, government departments(like "apd","afd") or emergency services, important people at events(like "sylvia") are important component.
+
+* Meaningless: The graoh shows that for meaningless message, company event slogans(like "nobanks").
+
 ```{r}
 m_tf_idf <- tidy_m %>%
   bind_tf_idf(word,condition,n)
@@ -433,10 +440,16 @@ m_tf_idf %>%
   group_by(condition) %>%
   slice_max(tf_idf, n = 15) %>%
   ungroup() %>%
+  mutate(word = reorder_within(word,tf_idf,condition)) %>%
   ggplot(aes(tf_idf, fct_reorder(word, tf_idf), fill = condition))+
+  scale_fill_brewer(palette = "Pastel1")+
+  scale_y_reordered()+
   geom_col(show.legend = FALSE)+
   facet_wrap(~condition,ncol = 2,scales = "free")+
-  labs(x = "word",y = NULL)
+  ggtitle("mbdata") +
+  theme(plot.title = element_text(size=10,
+                                  hjust = 0.4))+
+  labs(y = NULL)
 ```
 
 ##### 2.3.3.3 Bigrams visualization
