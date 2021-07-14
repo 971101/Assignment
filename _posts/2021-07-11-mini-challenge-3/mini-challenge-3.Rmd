@@ -424,7 +424,7 @@ Use the <font color = blue>*bind_tf_idf()*</font> to find the important words fo
 
 * Meaningful: The graph shows that for meaningful message, government departments(like "apd","afd") or emergency services, important people at events(like "sylvia") are important component.
 
-* Meaningless: The graoh shows that for meaningless message, company event slogans(like "nobanks").
+* Meaningless: The graoh shows that for meaningless message, company event slogans(like "nobanks") are important component.
 
 ```{r}
 m_tf_idf <- tidy_m %>%
@@ -536,7 +536,29 @@ ggraph(meaningful_graph,layout = "fr")+
 
 #### 2.3.4 Question 1 conclusion
 
+We can distinguish the differences according to the characteristics of the words used in each category.
 
+* Junk: The characteristics of the words in junk category: 
+
+    * Most of them are words related to POK Rally, used to vent feelings or words related to success. There are also statements against the government and police. Words like “success”,“life”.
+
+    * There are also obvious spam features such as rt and grammar. These message number is very large and do not provide useful information.
+    
+    * There are many social media accounts(like “kronosstar”).
+    
+* Meaningful: The characteristics of the words in meaningful category: 
+
+    * Words can provide information about the important people of the events. Words like “viktore”.
+
+    * Words can provide information on the important processes of the events and important government or emergency services. Words like “standoff”,"afd" and "apd".
+
+    * Words can provide information on the important locations of the events. words like “dolphin”,“dancing”.
+    
+* Meaningless: The characteristics of the words in meaningless category:
+
+    * Content sent by individuals for certain purposes.
+
+    * Content sent by businesses to promote their company or products. Word like “credit” is issued to promote a credit card.
 
 ### 2. 4 Question 2  
 
