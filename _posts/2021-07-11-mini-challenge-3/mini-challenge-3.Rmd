@@ -110,8 +110,7 @@ df <- rbind.data.frame(read1,read2,read3)
 glimpse(df)
 DT::datatable(df,filter = 'top',
               extensions = 'Buttons',
-              options = list(autoWidth = TRUE, columnDefs = list(list(width = '400px', 
-                                                                      targets = c(4))),
+              options = list(autoWidth = FALSE, columnDefs = list(list(width = '500px',targets = c(4))),
                              dom='Bfrtip',
                              buttons=c('copy', 'csv', 'excel', 'print', 'pdf'))) 
 ```
@@ -126,8 +125,7 @@ df$time <- as_hms(ymd_hms((df$`date(yyyyMMddHHmmss)`)))
 glimpse(df)
 DT::datatable(df,filter = 'top',
               extensions = 'Buttons',
-              options = list(autoWidth = TRUE, columnDefs = list(list(width = '400px', 
-                                                                      targets = c(4))),
+              options = list(autoWidth = FALSE, columnDefs = list(list(width = '400px',targets = c(4))),
                              dom='Bfrtip',
                              buttons=c('copy', 'csv', 'excel', 'print', 'pdf')))
 ```
@@ -144,8 +142,7 @@ df_cc <- subset(df1,type == "ccdata")
 df_cc$condition <- "meaningful"
 DT::datatable(df_cc,filter = 'top',
               extensions = 'Buttons',
-              options = list(autoWidth = TRUE, columnDefs = list(list(width = '400px', 
-                                                                      targets = c(3))),
+              options = list(autoWidth = FALSE, columnDefs = list(list(width = '400px',targets = c(3))),
                              dom='Bfrtip',
                              buttons=c('copy', 'csv', 'excel', 'print', 'pdf')))
 ```
@@ -246,7 +243,7 @@ meaningless$condition <- "meaningless"
 finalq1 <- rbind.data.frame(meaningful,junk, meaningless)
 DT::datatable(finalq1,filter = 'top',
               extensions = 'Buttons',
-              options = list(autoWidth = TRUE, columnDefs = list(list(width = '400px', targets = c(3))),
+              options = list(autoWidth = FALSE, columnDefs = list(list(width = '400px', targets = c(3))),
                              dom='Bfrtip',
                              buttons=c('copy', 'csv', 'excel', 'print', 'pdf')))
 ```
@@ -272,7 +269,7 @@ The messages in the table below is clean.
 ```{r}
 DT::datatable(finalq1,filter = 'top',
               extensions = 'Buttons',
-              options = list(autoWidth = TRUE, columnDefs = list(list(width = '400px', targets = c(3))),
+              options = list(autoWidth = FALSE, columnDefs = list(list(width = '400px', targets = c(3))),
                              dom='Bfrtip',
                              buttons=c('copy', 'csv', 'excel', 'print', 'pdf')))
 ```
@@ -616,7 +613,7 @@ q2_rally <- rbind(q2_rally_m,q2_rally_cc)
 
 DT::datatable(q2_rally,filter = 'top',
               extensions = 'Buttons',
-              options = list(autoWidth = TRUE, columnDefs = list(list(width = '400px', targets = c(4))),
+              options = list(autoWidth = FALSE, columnDefs = list(list(width = '400px', targets = c(4))),
                              dom='Bfrtip',
                              buttons=c('copy', 'csv', 'excel', 'print', 'pdf')))
 ```
@@ -668,7 +665,7 @@ q2_fire <- rbind(q2_fire_m,q2_fire_cc)
 
 DT::datatable(q2_fire,filter = 'top',
               extensions = 'Buttons',
-              options = list(autoWidth = TRUE, columnDefs = list(list(width = '400px', targets = c(4))),
+              options = list(autoWidth = FALSE, columnDefs = list(list(width = '400px', targets = c(4))),
                              dom='Bfrtip',
                              buttons=c('copy', 'csv', 'excel', 'print', 'pdf')))
 ```
@@ -719,7 +716,7 @@ q2_accident <- rbind(q2_accident_m,q2_accident_cc)
 
 DT::datatable(q2_accident,filter = 'top',
               extensions = 'Buttons',
-              options = list(autoWidth = TRUE, columnDefs = list(list(width = '400px', targets = c(4))),
+              options = list(autoWidth = FALSE, columnDefs = list(list(width = '400px', targets = c(4))),
                              dom='Bfrtip',
                              buttons=c('copy', 'csv', 'excel', 'print', 'pdf')))
 ```
