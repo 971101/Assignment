@@ -1060,6 +1060,28 @@ gps_point <- gps_sf %>%
   st_cast("MULTIPOINT")
 ```
 
+
+```{r}
+q3_rally_gps <- subset(q2_rally_m,select = c("type","date(yyyyMMddHHmmss)","author",
+                                 "message","latitude","longitude","time"))
+gps_rally_m <- na.omit(q3_rally_gps)
+gps_rally_sf <- st_as_sf(gps_rally_m,
+                   coords = c("longitude","latitude"),
+                   crs = 4326)
+
+q3_rally_gps <- na.omit(q3_rally_gps)
+
+rally_count <- q3_rally_gps %>%
+  count(longitude,latitude)
+rally_count$n <- as.numeric(rally_count$n)
+
+gps_rally_sf <- st_as_sf(rally_count,
+                   coords = c("longitude","latitude"),
+                   crs = 4326)
+gps_rally_point <- gps_rally_sf %>%
+  st_cast("MULTIPOINT")
+```
+
 ```{r}
 q3_fire_gps <- subset(q2_fire_m,select = c("type","date(yyyyMMddHHmmss)","author",
                                  "message","latitude","longitude","time"))
@@ -1074,12 +1096,34 @@ fire_count <- q3_fire_gps %>%
   count(longitude,latitude)
 fire_count$n <- as.numeric(fire_count$n)
 
-gps_sf <- st_as_sf(fire_count,
+gps_fire_sf <- st_as_sf(fire_count,
                    coords = c("longitude","latitude"),
                    crs = 4326)
-gps_fire_point <- gps_sf %>%
+gps_fire_point <- gps_fire_sf %>%
   st_cast("MULTIPOINT")
 
+```
+
+```{r}
+q3_accident_gps <- subset(q2_accident_m,select = c("type","date(yyyyMMddHHmmss)","author",
+                                 "message","latitude","longitude","time"))
+gps_accident_m <- na.omit(q3_accident_gps)
+gps_accident_sf <- st_as_sf(gps_accident_m,
+                   coords = c("longitude","latitude"),
+                   crs = 4326)
+
+q3_accidnet_gps <- na.omit(q3_accident_gps)
+
+accident_count <- q3_accident_gps %>%
+  count(longitude,latitude)
+accident_count$n <- as.numeric(accident_count$n)
+accident_count <- na.omit(accident_count)
+
+gps_accident_sf <- st_as_sf(accident_count,
+                   coords = c("longitude","latitude"),
+                   crs = 4326)
+gps_accident_point <- gps_accident_sf %>%
+  st_cast("MULTIPOINT")
 ```
 
 ```{r}
@@ -1100,7 +1144,27 @@ tm_shape(bgmap)+
          saturation = 1,
          interpolate = TRUE,
          max.value = 255) +
+  tm_shape(gps_rally_point) +
+  tm_dots(size = "n")
+
+tmap_mode("view")
+tm_shape(bgmap)+
+  tm_rgb(r=1,g=2,b=3,
+         alpha = NA,
+         saturation = 1,
+         interpolate = TRUE,
+         max.value = 255) +
   tm_shape(gps_fire_point) +
+  tm_dots(size = "n")
+
+tmap_mode("view")
+tm_shape(bgmap)+
+  tm_rgb(r=1,g=2,b=3,
+         alpha = NA,
+         saturation = 1,
+         interpolate = TRUE,
+         max.value = 255) +
+  tm_shape(gps_accident_point) +
   tm_dots(size = "n")
 
 ```
