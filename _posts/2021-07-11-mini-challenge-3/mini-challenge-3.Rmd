@@ -909,8 +909,7 @@ q2_rally_tidy%>%
     labs(y ="pok")
 ```
 
-The most important one in the speech is the POK leader Sylvia Marek, who played a similar role to host. At the begining, POK leader Sylvia Marek opened with a speech and introduced the guests, Dr. Audrey McConnell Newman, Professor Lorenzo Di Stefano and Lucio Jakab. 
-From the diagram, there are intermittent references to Sylvia Marek throughout the speech.
+* The most important one in the speech is the POK leader Sylvia Marek, who played a similar role to host.From the diagram, there are intermittent references to Sylvia Marek throughout the speech.
 
 ```{r}
 q2_rally_tidy%>%
@@ -922,15 +921,15 @@ q2_rally_tidy%>%
     labs(y ="sylvia|marek")
 ```
 
-    + The first speaker is Lucio Jakab who is the co-founder of Save Our Wildlands.He told that they had a symbiotic relationship with the earth, wildlands are their legacy for the children.
+* The first speaker is Lucio Jakab who is the co-founder of Save Our Wildlands.He told that they had a symbiotic relationship with the earth, wildlands are their legacy for the children.
     
-    + After the speech of Jakab, Viktor-E came to the stage to play the new song "River Soldiers".
+* After the speech of Jakab, Viktor-E came to the stage to play the new song "River Soldiers".
     
-    + The third speaker is professor Lorenzo Di Stefano made the talk about corporate social responsibility.
+* The third speaker is professor Lorenzo Di Stefano made the talk about corporate social responsibility.
     
-    + The next talk was delivered by McConnell Newman, who was an internationally renown environmental scientist.
+* The next talk was delivered by McConnell Newman, who was an internationally renown environmental scientist.
     
-    + The speech ended at 18:45. Sylvia Marek thanked Dr. Newman and welcame Viktor-E back on stage to sing their hit "Stand Up Speak Up". The rally closed around 19:05.
+* The speech ended at 18:45. Sylvia Marek thanked Dr. Newman and welcame Viktor-E back on stage to sing their hit "Stand Up Speak Up". The rally closed around 19:05.
 
 ```{r}
 q2_rally_tidy%>%
@@ -969,6 +968,20 @@ q2_rally_tidy%>%
 
 ##### 2.4.2.2 Fire in Dancing Dolphin
 
+The fire was at Dancing Dolphin.
+
+* At the earliest time (around 18:30), people reported some precursor of the fire.
+
+* The call center reported that there was possible fire at 18:40, and called for fire trucks at around 18:40. 
+
+* Around 18:50, the fire trucks and ambulance arrived.
+
+* The police evacuated residents at around 18:50 and expanded evacuation area at 19:20.
+
+* There are conflicting reports of the condition of fire from 9:15.
+
+*At 21:30, AFD reported an explosion at the Dancing Dolphin.
+
 ```{r}
 q2_fire_tidy%>%
   filter(str_detect(word,"fire|dolphin|dancing|building|apartment")) %>%
@@ -979,7 +992,7 @@ q2_fire_tidy%>%
     labs(y = NULL)
  
 q2_fire_tidy%>%
-  filter(str_detect(word,"floor|floors|upper||resident|trapped")) %>%
+  filter(str_detect(word,"floor|floors|upper|resident")) %>%
   ggplot(aes(x = time)) +
   geom_histogram(fill = "#FFCCCC")+
   coord_cartesian(xlim = c(61200,77460))+
