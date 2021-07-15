@@ -889,7 +889,7 @@ From the processing of the data, it was found that there were three events in th
 
 POK rally was held on Abila City Park. About 2000 people gathered there and heavy police was disposed.
 
-* These two graphs shows the beginning time of POK rally is 17:00 and ending time is 19:15.
+* These two graphs shows the beginning time of POK rally is 17:00 and ending time is 19:05.
 
 ```{r}
 q2_rally_tidy%>%
@@ -922,25 +922,17 @@ q2_rally_tidy%>%
     labs(y ="sylvia|marek")
 ```
 
-The first speaker is Viktor-E who also provided the music of the event. His 
+    + The first speaker is Lucio Jakab who is the co-founder of Save Our Wildlands.He told that they had a symbiotic relationship with the earth, wildlands are their legacy for the children.
+    
+    + After the speech of Jakab, Viktor-E came to the stage to play the new song "River Soldiers".
+    
+    + The third speaker is professor Lorenzo Di Stefano made the talk about corporate social responsibility.
+    
+    + The next talk was delivered by McConnell Newman, who was an internationally renown environmental scientist.
+    
+    + The speech ended at 18:45. Sylvia Marek thanked Dr. Newman and welcame Viktor-E back on stage to sing their hit "Stand Up Speak Up". The rally closed around 19:05.
 
 ```{r}
-q2_rally_tidy%>%
-  filter(str_detect(word,"viktor")) %>%
-  ggplot(aes(x = time)) +
-  geom_histogram(fill = "#6699CC")+
-  coord_cartesian(xlim = c(61200,77460))+
-  theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
-  labs(y ="viktor")
-
-q2_rally_tidy%>%
-  filter(str_detect(word,"audrey|mcConnell|newman")) %>%
-  ggplot(aes(x = time)) +
-  geom_histogram(fill = "#6699CC")+
-  coord_cartesian(xlim = c(61200,77460))+
-  theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
-  labs(y ="audrey|mcConnell|newman")
-
 q2_rally_tidy%>%
   filter(str_detect(word,"lucio|jakab")) %>%
   ggplot(aes(x = time)) +
@@ -950,12 +942,28 @@ q2_rally_tidy%>%
   labs(y ="audrey|mcConnell|newman")
 
 q2_rally_tidy%>%
+  filter(str_detect(word,"viktor")) %>%
+  ggplot(aes(x = time)) +
+  geom_histogram(fill = "#6699CC")+
+  coord_cartesian(xlim = c(61200,77460))+
+  theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
+  labs(y ="viktor")
+
+q2_rally_tidy%>%
   filter(str_detect(word,"lorenzo|di|stefano")) %>%
   ggplot(aes(x = time)) +
   geom_histogram(fill = "#6699CC")+
   coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
   labs(y ="lorenzo|di|stefano")
+
+q2_rally_tidy%>%
+  filter(str_detect(word,"audrey|mcConnell|newman")) %>%
+  ggplot(aes(x = time)) +
+  geom_histogram(fill = "#6699CC")+
+  coord_cartesian(xlim = c(61200,77460))+
+  theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
+  labs(y ="audrey|mcConnell|newman")
 
 ```
 
