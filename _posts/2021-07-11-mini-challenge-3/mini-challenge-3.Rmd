@@ -875,7 +875,21 @@ DT::datatable(q2_accident_tidy,filter = 'top',
 
 #### 2.4.2 Visualization different events
 
+### Visualizaiton different events
+
+From the processing of the data, it was found that there were three events in the mini-challenge 3.
+
+* The POK rally event, which focuses on the start time of the rally, the time of the different speakers' speech and the end time.
+
+* Fire in Dancing Dolphin, which focused on the start of the fire, rescue, evacuation and the final explosion.
+
+* From hit-and-run accident to shooting and standoff, which focused on the traffic accident, the hostage situation, the confrontation with the police, the negotiations and the rescue of the hostages.
+
 ##### 2.4.2.1 POK event
+
+POK rally was held on Abila City Park. About 2000 people gathered there and heavy police was disposed.
+
+* These two graphs shows the beginning time of POK rally is 17:00 and ending time is 19:15.
 
 ```{r}
 q2_rally_tidy%>%
@@ -893,7 +907,12 @@ q2_rally_tidy%>%
   coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
     labs(y ="pok")
+```
 
+The most important one in the speech is the POK leader Sylvia Marek, who played a similar role to host. At the begining, POK leader Sylvia Marek opened with a speech and introduced the guests, Dr. Audrey McConnell Newman, Professor Lorenzo Di Stefano and Lucio Jakab. 
+From the diagram, there are intermittent references to Sylvia Marek throughout the speech.
+
+```{r}
 q2_rally_tidy%>%
   filter(str_detect(word,"sylvia|marek")) %>%
   ggplot(aes(x = time)) +
@@ -901,7 +920,11 @@ q2_rally_tidy%>%
   coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
     labs(y ="sylvia|marek")
+```
 
+The first speaker is Viktor-E who also provided the music of the event. His 
+
+```{r}
 q2_rally_tidy%>%
   filter(str_detect(word,"viktor")) %>%
   ggplot(aes(x = time)) +
