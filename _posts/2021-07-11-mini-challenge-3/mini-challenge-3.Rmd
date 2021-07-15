@@ -35,7 +35,8 @@ As analysts, we were assigned with several tasks in order to identify risks and 
 
 ### 1.2 Literature review
 
-In the literature review conducted, refer to the text section of [<font color = grey>*<Text mining with R>*</font>](https://www.tidytextmining.com/) for a visualization of [<font color = grey>*the work of Peking University*</font>](https://www.cs.umd.edu/hcil/varepository/VAST%20Challenge%202014/challenges/MC3%20-%20Real-Time,%20Streaming%20Social%20Media/entries/Peking%20University/) to answer questions 2 and 3.
+In the literature review conducted, refer to the [<font color = grey>*Text mining with R*</font>](https://www.tidytextmining.com/) to process the text content.
+Refer to [<font color = grey>*the work of Peking University*</font>](https://www.cs.umd.edu/hcil/varepository/VAST%20Challenge%202014/challenges/MC3%20-%20Real-Time,%20Streaming%20Social%20Media/entries/Peking%20University/) to do the visualization part of questions 2 and 3.
 
 ### 1.3 Objective
 
