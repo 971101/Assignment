@@ -9,6 +9,8 @@ date: 07-11-2021
 output:
   distill::distill_article:
     self_contained: false
+    toc: true
+    theme: united
 ---
 
 
@@ -33,6 +35,7 @@ As analysts, we were assigned with several tasks in order to identify risks and 
 
 ### 1.2 Literature review
 
+In the literature review conducted, refer to the text section of [<font color = grey>*<Text mining with R>*</font>](https://www.tidytextmining.com/) for a visualization of [<font color = grey>*the work of Peking University*</font>](https://www.cs.umd.edu/hcil/varepository/VAST%20Challenge%202014/challenges/MC3%20-%20Real-Time,%20Streaming%20Social%20Media/entries/Peking%20University/) to answer questions 2 and 3.
 
 ### 1.3 Objective
 
@@ -47,11 +50,19 @@ Determine the appropriate location for first responders.
 
 ### 1.4 Question 1
 
+Using visual analytics, characterize the different types of content in the dataset. What distinguishes meaningful event reports from typical chatter from junk or spam? Please limit your answer to 8 images and 500 words.
+
 ### 1.5 Question 2
+
+Use visual analytics to represent and evaluate how the level of the risk to the public evolves over the course of the evening. Consider the potential consequences of the situation and the number of people who could be affected. Please limit your answer to 10 images and 1000 words.
 
 ### 1.6 Question 3
 
+If you were able to send a team of first responders to any single place, where would it be? Provide your rationale. How might your response be different if you had to respond to the events in real time rather than retrospectively? Please limit your answer to 8 images and 500 words.
+
 ### 1.7 Question 4
+
+If you solved this mini-challenge in 2014, how did you approach it differently this year?
 
 
 ---
@@ -875,8 +886,6 @@ DT::datatable(q2_accident_tidy,filter = 'top',
 
 #### 2.4.2 Visualization different events
 
-### Visualizaiton different events
-
 From the processing of the data, it was found that there were three events in the mini-challenge 3.
 
 * The POK rally event, which focuses on the start time of the rally, the time of the different speakers' speech and the end time.
@@ -968,7 +977,7 @@ q2_rally_tidy%>%
 
 ##### 2.4.2.2 Fire in Dancing Dolphin
 
-The fire was at Dancing Dolphin.
+The fire was at Dancing Dolphin.About 2000 people gathered there.
 
 * At the earliest time (around 18:30), people reported some precursor of the fire.
 
@@ -1038,13 +1047,13 @@ q2_fire_tidy%>%
 
 * At around 19:35, police pursued suspected vehicle(black van).
 
-* At around 19:45, Gun battle between police and hit-and-run drivers. And there was a hostage in the hands of the hit-and-run drivers.
+* At around 19:45, Gun battle between police and hit-and-run drivers. And there was 2 hostages in the hands of the 2 van guys.
 
 * During 19:45-20:00, lots of people reported a police dead in the gunshot.
 
 * Starting from 20:00, Police and the hit-and-run were in a standoff and police were evacuating people.
 
-* At aroud 21:15, the two kidnappers dropped the gun and gave up.
+* At around 21:15, the two kidnappers dropped the gun and gave up.
 
 ```{r}
 q2_accident_tidy%>%
@@ -1091,6 +1100,8 @@ q2_accident_tidy%>%
 ### 2.5 Question 3
 
 #### 2.5.1 Data processing
+
+Using <font color = blue>*st_as_sf()*</font> to transform variables in these three events to variables which can be used in the function <font color = blue>*tmap*</font>.
 
 ```{r}
 bgmap <- raster("F:/visual/assignment and project/MC3/MC3/Geospatial/MC2-tourist.tif")
@@ -1182,6 +1193,10 @@ gps_accident_point <- gps_accident_sf %>%
   st_cast("MULTIPOINT")
 ```
 
+#### 2.5.2 Visualization
+
+Use the number of the place reported in the messages as size and color in the map.
+
 ```{r}
 tmap_mode("view")
 tm_shape(bgmap,point.per = "feature")+
@@ -1191,8 +1206,12 @@ tm_shape(bgmap,point.per = "feature")+
          interpolate = TRUE,
          max.value = 255) +
   tm_shape(gps_point,is.master = TRUE, point.per = 'feature')+
-  tm_dots(size ="n")
+  tm_dots(size ="n",col = "n")
+```
 
+##### POK rally
+
+```{r}
 tmap_mode("view")
 tm_shape(bgmap)+
   tm_rgb(r=1,g=2,b=3,
@@ -1201,8 +1220,12 @@ tm_shape(bgmap)+
          interpolate = TRUE,
          max.value = 255) +
   tm_shape(gps_rally_point) +
-  tm_dots(size = "n")
+  tm_dots(size = "n",col = "n")
+```
 
+##### Fire in Dancing Dolphin
+
+```{r}
 tmap_mode("view")
 tm_shape(bgmap)+
   tm_rgb(r=1,g=2,b=3,
@@ -1211,8 +1234,12 @@ tm_shape(bgmap)+
          interpolate = TRUE,
          max.value = 255) +
   tm_shape(gps_fire_point) +
-  tm_dots(size = "n")
+  tm_dots(size = "n",col = "n")
+```
 
+##### From hit-and-run accident to shooting and standoff
+
+```{r}
 tmap_mode("view")
 tm_shape(bgmap)+
   tm_rgb(r=1,g=2,b=3,
@@ -1221,7 +1248,27 @@ tm_shape(bgmap)+
          interpolate = TRUE,
          max.value = 255) +
   tm_shape(gps_accident_point) +
-  tm_dots(size = "n")
+  tm_dots(size = "n",col = "n")
 
 ```
 
+#### 2.5.3 Conclusion
+
+From the maps above, if you were able to send a team of first responders to any single place, I will send them to the place of accident. Because the two guys can be caught at the first time, then the gunshot won't happen.
+
+If I need to respond in real time, I will send the team to the place of fire place. Because there are lot of residents are involved in and can result in bad ends.
+
+The place I don't choose is the place of POK rally. Although it involves a large number of people (2000 people), no one gets hurt in the rally.
+
+### 2.6 Question 4
+
+The biggest different place for me is the way of showing maps. In this mini-challenge 3, I mainly use <font color = blue>*tmap()*</font> to show maps. But it was published in 2016. So if in 2014, I cannot use this package to visualization maps, may be I just can use fundamental packages to show maps like below.
+
+```{r}
+x = readShapeSpatial("F:/visual/assignment and project/MC3/MC3/Geospatial/Abila.shp")
+proj4string(x) <- CRS("+proj=longlat +ellps=WGS84")
+projNew <- CRS("+proj=merc +lat_0=45n +lon_0=100e")
+xProj <- spTransform(x, projNew)
+dev.new()
+plot(xProj)
+```
