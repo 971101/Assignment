@@ -1034,6 +1034,18 @@ q2_fire_tidy%>%
 
 ##### 2.4.2.3 From hit-and-run accident to shooting and standoff
 
+* The hit and run accident was highly reported at around 7:15. 
+
+* At around 19:35, police pursued suspected vehicle(black van).
+
+* At around 19:45, Gun battle between police and hit-and-run drivers. And there was a hostage in the hands of the hit-and-run drivers.
+
+* During 19:45-20:00, lots of people reported a police dead in the gunshot.
+
+* Starting from 20:00, Police and the hit-and-run were in a standoff and police were evacuating people.
+
+* At aroud 21:15, the two kidnappers dropped the gun and gave up.
+
 ```{r}
 q2_accident_tidy%>%
   filter(str_detect(word,"hit|run|van|bicyclist|driver|incident|accident|bike|pursuit")) %>%
@@ -1042,7 +1054,7 @@ q2_accident_tidy%>%
   coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
     labs(y = NULL)
- 
+
 q2_accident_tidy%>%
   filter(str_detect(word,"gun|shoot|shot|histage")) %>%
   ggplot(aes(x = time)) +
