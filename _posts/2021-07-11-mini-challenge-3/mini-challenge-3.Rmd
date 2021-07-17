@@ -35,8 +35,8 @@ As analysts, we were assigned with several tasks in order to identify risks and 
 
 ### 1.2 Literature review
 
-In the literature review conducted, refer to the [<font color = grey>*Text mining with R*</font>](https://www.tidytextmining.com/) to process the text content.
-Refer to [<font color = grey>*the work of Peking University*</font>](https://www.cs.umd.edu/hcil/varepository/VAST%20Challenge%202014/challenges/MC3%20-%20Real-Time,%20Streaming%20Social%20Media/entries/Peking%20University/) to do the visualization part of questions 2 and 3.
+In the literature review conducted, refer to the [<font color = grey>*Text mining with R*</font>](https://www.tidytextmining.com/) to process the text content. From this book, I learned how to token the text content, visual the text like wordcloud.
+Refer to [<font color = grey>*the work of Peking University*</font>](https://www.cs.umd.edu/hcil/varepository/VAST%20Challenge%202014/challenges/MC3%20-%20Real-Time,%20Streaming%20Social%20Media/entries/Peking%20University/) to do the visualization part of questions 2 and 3. From  the article, I learned how to visual the time series in the bar graph and put the place info on the map.
 
 ### 1.3 Objective
 
@@ -88,7 +88,8 @@ packages = c('readr','tidytext','data.table','lubridate','ggplot2',
              'stringr','stringi','reshape2','RColorBrewer','wordcloud',
              'forcats','igraph','ggraph','widyr','clock','knitr','tidyverse',
              'DT','hms','ggiraph','topicmodels','raster','sf','maptools',
-             'rgdal','ggmap','sp','tmap','tmaptools','devtools','patchwork')
+             'rgdal','ggmap','sp','tmap','tmaptools','devtools','patchwork',
+             'patchwork')
 for(p in packages){
   if(!require(p,character.only = TRUE)){
     install.packages(p)
@@ -999,7 +1000,7 @@ q2_fire_tidy%>%
   geom_histogram(fill = "#FFCCCC")+
   coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
-    labs(y = NULL)
+    labs( x= "first phrase", y = NULL)
  
 q2_fire_tidy%>%
   filter(str_detect(word,"floor|floors|upper|resident")) %>%
@@ -1007,7 +1008,7 @@ q2_fire_tidy%>%
   geom_histogram(fill = "#FFCCCC")+
   coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
-    labs(y =NULL)
+    labs(x= "first phrase",y =NULL)
 
 q2_fire_tidy%>%
   filter(str_detect(word,"afd|police|cop|cops|fireman|firefighter")) %>%
@@ -1015,7 +1016,7 @@ q2_fire_tidy%>%
   geom_histogram(fill = "#FFCCCC")+
   coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
-    labs(y =NULL)
+    labs(x= "first phrase",y =NULL)
 
 q2_fire_tidy%>%
   filter(str_detect(word,"ambulance|injury|injuries|evacuated|evacuating|evacuation|evacuate")) %>%
@@ -1023,7 +1024,7 @@ q2_fire_tidy%>%
   geom_histogram(fill = "#FF99CC")+
   coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
-  labs(y =NULL)
+  labs(x= "second phrase",y =NULL)
 
 q2_fire_tidy%>%
   filter(str_detect(word,"control")) %>%
@@ -1031,7 +1032,7 @@ q2_fire_tidy%>%
   geom_histogram(fill = "#CC6699")+
   coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
-  labs(y = "control")
+  labs(x= "third phrase",y = NULL)
 
 q2_fire_tidy%>%
   filter(str_detect(word,"collapsed|blaze|escalated|explosion")) %>%
@@ -1039,7 +1040,7 @@ q2_fire_tidy%>%
   geom_histogram(fill = "#993366")+
   coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
-  labs(y =NULL)
+  labs(x= "fourth phrase",y =NULL)
 ```
 
 ##### 2.4.2.3 From hit-and-run accident to shooting and standoff
@@ -1063,7 +1064,7 @@ q2_accident_tidy%>%
   geom_histogram(fill = "#99CC99")+
   coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
-    labs(y = NULL)
+    labs(x= "first phrase",y = NULL)
 
 q2_accident_tidy%>%
   filter(str_detect(word,"gun|shoot|shot|histage")) %>%
@@ -1071,7 +1072,7 @@ q2_accident_tidy%>%
   geom_histogram(fill = "#00CC66")+
   coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
-    labs(y =NULL)
+    labs(x= "second phrase",y =NULL)
 
 q2_accident_tidy%>%
   filter(str_detect(word,"killed|dead")) %>%
@@ -1079,7 +1080,7 @@ q2_accident_tidy%>%
   geom_histogram(fill = "#009900")+
   coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
-    labs(y =NULL)
+    labs(x= "third phrase",y =NULL)
 
 q2_accident_tidy%>%
   filter(str_detect(word,"standoff|negotiating|negotiate|negotiator|negotiation|yelling|screaming|chasing")) %>%
@@ -1087,7 +1088,7 @@ q2_accident_tidy%>%
   geom_histogram(fill = "#006600")+
   coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
-  labs(y =NULL)
+  labs(x= "fourth phrase",y =NULL)
 
 q2_accident_tidy%>%
   filter(str_detect(word,"end|over|ocaught|rescued")) %>%
@@ -1095,7 +1096,7 @@ q2_accident_tidy%>%
   geom_histogram(fill = "#003300")+
   coord_cartesian(xlim = c(61200,77460))+
   theme(panel.grid=element_blank(),axis.text.x= element_text(angle=60, hjust= 1))+
-  labs(y =NULL)
+  labs(x= "fifth phrase",y =NULL)
 ```
 
 ### 2.5 Question 3
@@ -1212,6 +1213,8 @@ tm_shape(bgmap,point.per = "feature")+
 
 ##### POK rally
 
+Reported messages about the POK RALLY is concentrated on the abila park.
+
 ```{r}
 tmap_mode("view")
 tm_shape(bgmap)+
@@ -1226,6 +1229,8 @@ tm_shape(bgmap)+
 
 ##### Fire in Dancing Dolphin
 
+Reported messages about Fire in Dancing Dolphin is concentrated on the guy's gyros.
+
 ```{r}
 tmap_mode("view")
 tm_shape(bgmap)+
@@ -1239,6 +1244,8 @@ tm_shape(bgmap)+
 ```
 
 ##### From hit-and-run accident to shooting and standoff
+
+Reported messages about From hit-and-run accident to shooting and standoff is concentrated on the different places, because the places of the event has changed during the pursuit process. 
 
 ```{r}
 tmap_mode("view")
