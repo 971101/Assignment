@@ -1255,7 +1255,7 @@ tm_shape(bgmap)+
 
 #### 2.5.3 Conclusion
 
-From the maps above, if you were able to send a team of first responders to any single place, I will send them to the place of accident. Because the two guys can be caught at the first time, then the gunshot won't happen.
+From the maps above, if you were able to send a team of first responders to any single place, I will send them to the place of accident. Because the two guys can be caught at the first time, then the gunshot won't happen. And the place where happened accident is very close to the fire place. So they can go to fire place quickly after dealing with the accident.
 
 If I need to respond in real time, I will send the team to the place of fire place. Because there are lot of residents are involved in and can result in bad ends.
 
