@@ -1279,5 +1279,8 @@ proj4string(x) <- CRS("+proj=longlat +ellps=WGS84")
 projNew <- CRS("+proj=merc +lat_0=45n +lon_0=100e")
 xProj <- spTransform(x, projNew)
 dev.new()
+```
+
+```{r}
 plot(xProj)
 ```
